@@ -1,0 +1,41 @@
+<div
+  class="container"
+  [ngClass]="[
+    cheap != expensive && item.price == cheap ? 'cheap-border' : '',
+    cheap != expensive && item.price == expensive ? 'expensive-border' : ''
+  ]"
+>
+  <img [src]="item.pictures[0]" alt="Missing picture" />
+  <div>
+    <div>{{ item.name | uppercase }}</div>
+    <div>{{ item.cuisine | lowercase }}</div>
+    <div>More info-></div>
+  </div>
+  <div>Cena: {{ item.price | currency }}</div>
+  <div class="buttons">
+    <button
+      (click)="addItem()"
+      [style.visibility]="count != item.maximum_per_day ? 'visible' : 'hidden'"
+    >
+      +
+    </button>
+    <button
+      (click)="removeItem()"
+      [style.visibility]="count != 0 ? 'visible' : 'hidden'"
+    >
+      -
+    </button>
+    <button [hidden]="item.maximum_per_day == 0">del</button>
+  </div>
+  <div [hidden]="item.maximum_per_day != 0">Produkt chwilowo niedostępny</div>
+  <div [hidden]="item.maximum_per_day != count || count == 0">
+    Osiągnięto limit dzienny
+  </div>
+  <div
+    class="counter"
+    [hidden]="item.maximum_per_day == 0"
+    [ngClass]="item.maximum_per_day! - count! < 3 ? 'red-border' : 'no-border'"
+  >
+    {{ count }}
+  </div>
+</div>

@@ -1,0 +1,28 @@
+img {
+  max-width: 300px;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 10px 0px 10px 0px;
+  padding: 5px;
+}
+
+.red-border {
+  border: 1px orange solid;
+}
+
+.counter {
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.expensive-border {
+  border: 1px red solid;
+}
+
+.cheap-border {
+  border: 1px green solid;
+}
