@@ -1,10 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { DishTemplate } from '../app.component';
+import { DishManagmentService } from '../dish-managment.service';
 
 @Component({
   selector: 'app-dishes',
   templateUrl: './dishes.component.html',
   styleUrls: ['./dishes.component.css'],
+  providers: [],
 })
 export class DishesComponent implements OnInit {
   @Input() dishes: DishTemplate[] = [];
@@ -13,7 +15,12 @@ export class DishesComponent implements OnInit {
 
   current_selection = new Map<number, number>();
 
-  constructor() {
+  constructor(private dish_managment: DishManagmentService) {
+    this.dish_managment.deleteDish$.subscribe((dish) => {
+      this.dishes = this.dishes.filter((d) => d.id != dish.id);
+      this.find_most_least_expensive();
+      console.log(this.dishes);
+    });
   }
 
   find_most_least_expensive() {
@@ -28,7 +35,7 @@ export class DishesComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  ngOnChanges():void{
+  ngOnChanges(): void {
     this.find_most_least_expensive();
   }
 

@@ -25,7 +25,7 @@
     >
       -
     </button>
-    <button [hidden]="item.maximum_per_day == 0">del</button>
+    <button (click)="deleteItem()">del</button>
   </div>
   <div [hidden]="item.maximum_per_day != 0">Produkt chwilowo niedostępny</div>
   <div [hidden]="item.maximum_per_day != count || count == 0">

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { DishManagmentService } from './dish-managment.service';
 
 export interface DishTemplate {
   id: number,
@@ -22,36 +23,13 @@ export interface DishTemplate {
 export class AppComponent {
   title = 'restaurant';
 
+  dishes: DishTemplate[] = [];
 
-  //move to service or sth
-  dishes: DishTemplate[] = [
-    {
-      id: 1,
-      name: 'Margherita',
-      cuisine: "włoska",
-      maximum_per_day: 10,
-      description: "Klasyczna pizza: sos pomidorowy, ser.",
-      price: 10,
-      pictures: ['../../assets/images/01.jpg'],
-    },
-    {
-      id: 2,
-      name: ' Quattro Forrmagi',
-      cuisine: "włoska",
-      maximum_per_day: 4,
-      price: 12,
-      description: "Pizza premium: sos pomidorowy, cztery sery.",
-      pictures: ['/assets/images/02.jpg'],
-    },
-    {
-      id: 3,
-      name: 'Lasange',
-      cuisine: "włoska",
-      maximum_per_day: 0,
-      price: 11,
-      description: "Tradycyjny włoski makaron.",
-      pictures: ['/assets/images/03.jpeg'],
-    }
-  ]
+  constructor(private dish_service: DishManagmentService){
+    this.dishes = dish_service.getDishes();
+    // dish_service.deleteDish$.subscribe()
+  }
+
+
 
 }

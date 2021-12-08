@@ -1,7 +1,7 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { DishTemplate } from '../app.component';
-import { Subject } from 'rxjs';
-import { NumberSymbol } from '@angular/common';
+import { DishManagmentService } from '../dish-managment.service';
 
 @Component({
   selector: 'app-item',
@@ -24,9 +24,7 @@ export class ItemComponent implements OnInit {
   @Output() add_event = new EventEmitter();
   @Output() remove_event = new EventEmitter();
 
-
-  constructor() {
-  }
+  constructor(private dish_service: DishManagmentService) {}
 
   ngOnInit(): void { }
 
@@ -36,5 +34,9 @@ export class ItemComponent implements OnInit {
 
   removeItem(){
     this.remove_event.emit(this.item);
+  }
+
+  deleteItem() {
+    this.dish_service.deleteSelectedDish(this.item);
   }
 }
