@@ -10,8 +10,8 @@
 #container {
   border: black 1px solid;
   padding: 10px;
-  position: sticky;
   background-color: rgb(187, 175, 157);
+  overflow: auto;
 }
 
 h3 {
