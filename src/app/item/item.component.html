@@ -9,7 +9,7 @@
   <div>
     <div>{{ item.name | uppercase }}</div>
     <div>{{ item.cuisine | lowercase }}</div>
-    <div>More info-></div>
+    <!-- <div>More info-></div> -->
   </div>
   <div class="reviews">
     <fa-icon [icon]="up" (click)="up_pressed()" [ngClass]="{'selected': this.up_selected}"></fa-icon>
@@ -30,16 +30,16 @@
     >
       -
     </button>
-    <button (click)="deleteItem()">del</button>
+    <button (click)="deleteItem()">usuń</button>
   </div>
   <div [hidden]="item.maximum_per_day != 0">Produkt chwilowo niedostępny</div>
-  <div [hidden]="item.maximum_per_day != count || count == 0">
+  <!-- <div [hidden]="item.maximum_per_day != count || count == 0">
     Osiągnięto limit dzienny
-  </div>
+  </div> -->
   <div
     class="counter"
     [hidden]="item.maximum_per_day == 0"
-    [ngClass]="item.maximum_per_day! - count! < 3 ? 'red-border' : 'no-border'"
+    [ngClass]="{ 'orange-border': item.maximum_per_day! - count! < 3, 'red-border': item.maximum_per_day == count && count != 0}"
   >
     {{ count }}
   </div>

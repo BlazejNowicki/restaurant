@@ -1,6 +1,6 @@
-import { CursorError } from '@angular/compiler/src/ml_parser/lexer';
 import { Component, Input } from '@angular/core';
 import { DishManagmentService } from './dish-managment.service';
+import { MockDataService } from './mock-data.service';
 
 export interface DishTemplate {
   id: number,
@@ -30,8 +30,8 @@ export class AppComponent {
   currency = Currency.Dolar;
   dishes: DishTemplate[] = [];
 
-  constructor(private dish_service: DishManagmentService){
-    this.dishes = dish_service.getDishes();
+  constructor(private dish_service: DishManagmentService, private mock_data: MockDataService){
+    this.dishes = mock_data.getMockData();
   }
 
   euroSelected(){

@@ -43,6 +43,8 @@ export class ItemComponent implements OnInit {
   ngOnInit(): void {}
 
   addItem(): void {
+    console.log("inside item ID:")
+    console.log(this.item);
     this.add_event.emit(this.item);
   }
 

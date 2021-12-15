@@ -1,3 +1,9 @@
+h3 {
+  text-align: center;
+  color: rgb(51, 46, 46);
+  font-size: 20px;
+}
+
 
 label, input {
   display: block;
@@ -5,15 +11,19 @@ label, input {
   width: 50%;
 }
 
-
+input {
+  background-color: rgb(240, 240, 240);
+}
 
 form > div{
   display: flex;
 }
 
 form {
-  border: 1px black solid;
+  /* border: 1px black solid; */
   padding: 10px;
+  background-color: rgb(231, 224, 212);
+  margin: 20px 0px 40px 0px;
 }
 
 .submit-div{
@@ -24,7 +34,7 @@ form {
 
 button {
   width: 100px;
-  background-color: brown;
+  background-color: rgb(75, 68, 51);
   color: white;
   border: none;
   padding: 5px;

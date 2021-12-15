@@ -1,11 +1,26 @@
-<h1>Mamma Mia</h1>
-<div class="currency">
-  <div>Waluta:</div>
-  <input type="radio" name="currency" value="dolar" id="dolar" (change)="dolarSelected()" checked>
-  <label for="dolar">Dolar</label>
-  <input type="radio" name="currency" value="euro" id="euro" (click)="euroSelected()" >
-  <label for="euro">Euro</label>
+<h1>Restauracja</h1>
+<div class="container">
+  <app-cart [dishes]="dishes"></app-cart>
+  <div class="currency">
+    <div>Waluta:</div>
+    <input
+      type="radio"
+      name="currency"
+      value="dolar"
+      id="dolar"
+      (change)="dolarSelected()"
+      checked
+    />
+    <label for="dolar">Dolar</label>
+    <input
+      type="radio"
+      name="currency"
+      value="euro"
+      id="euro"
+      (click)="euroSelected()"
+    />
+    <label for="euro">Euro</label>
+  </div>
+  <app-dishes [dishes]="dishes" [currency]="currency"></app-dishes>
+  <app-new-dish-form></app-new-dish-form>
 </div>
-<app-cart [dishes]="dishes"></app-cart>
-<app-dishes [dishes]="dishes" [currency]="currency"></app-dishes>
-<app-new-dish-form></app-new-dish-form>

@@ -40,6 +40,7 @@ export class DishesComponent implements OnInit {
       };
       this.dishes.push(new_dish);
       this.find_most_least_expensive();
+      this.dish_managment.updateCart(this.current_selection)
     });
 
 
@@ -64,6 +65,7 @@ export class DishesComponent implements OnInit {
   addItem(dish: any) {
     console.log('dish to add');
     console.log(dish);
+    console.log(this.dishes);
     let id = dish.id;
     if (this.current_selection.has(dish.id)) {
       let current_value = this.current_selection.get(id);
@@ -86,5 +88,6 @@ export class DishesComponent implements OnInit {
         this.current_selection.set(id, current_value! - 1);
       }
     }
+    this.dish_managment.updateCart(this.current_selection);
   }
 }
