@@ -27,9 +27,6 @@ export class AppComponent {
 
   constructor(private dish_service: DishManagmentService){
     this.dishes = dish_service.getDishes();
-    // dish_service.deleteDish$.subscribe()
   }
-
-
 
 }

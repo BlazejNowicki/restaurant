@@ -1,0 +1,31 @@
+
+label, input {
+  display: block;
+  margin: 5px;
+  width: 50%;
+}
+
+
+
+form > div{
+  display: flex;
+}
+
+form {
+  border: 1px black solid;
+  padding: 10px;
+}
+
+.submit-div{
+  align-items: center;
+  justify-content: end;
+  margin: 10px 5px 10px 0px;
+}
+
+button {
+  width: 100px;
+  background-color: brown;
+  color: white;
+  border: none;
+  padding: 5px;
+}

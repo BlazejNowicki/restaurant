@@ -20,7 +20,25 @@ export class DishesComponent implements OnInit {
       this.dishes = this.dishes.filter((d) => d.id != dish.id);
       this.find_most_least_expensive();
       console.log(this.dishes);
+      this.find_most_least_expensive();
     });
+
+    this.dish_managment.createDish$.subscribe((dish) => {
+      console.log(dish);
+      let id = Math.floor(Math.random()*1000);
+      let new_dish: DishTemplate = {
+        id: id,
+        name: dish.name,
+        maximum_per_day: dish.maximum_per_day,
+        cuisine: dish.cuisine,
+        price: dish.price,
+        pictures: ["../../assets/images/missing.jpeg"],
+      };
+      this.dishes.push(new_dish);
+      this.find_most_least_expensive();
+    });
+
+
   }
 
   find_most_least_expensive() {
