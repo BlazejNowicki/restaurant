@@ -1,0 +1,17 @@
+#item-list{
+  display: flex;
+  flex-wrap: wrap;
+}
+
+#item-list > * {
+  padding: 10px;
+}
+
+#container {
+  border: black 1px solid;
+  padding: 10px;
+}
+
+h3 {
+  margin: 0px 0px 10px 0px;
+}

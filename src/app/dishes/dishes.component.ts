@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { DishTemplate } from '../app.component';
+import { Currency, DishTemplate } from '../app.component';
 import { DishManagmentService } from '../dish-managment.service';
 
 @Component({
@@ -10,6 +10,8 @@ import { DishManagmentService } from '../dish-managment.service';
 })
 export class DishesComponent implements OnInit {
   @Input() dishes: DishTemplate[] = [];
+  @Input() currency: Currency = Currency.Dolar;
+
   most_expensive_price: number = 0;
   cheapest_price: number = 0;
 
@@ -18,9 +20,11 @@ export class DishesComponent implements OnInit {
   constructor(private dish_managment: DishManagmentService) {
     this.dish_managment.deleteDish$.subscribe((dish) => {
       this.dishes = this.dishes.filter((d) => d.id != dish.id);
+      this.current_selection.delete(dish.id);
       this.find_most_least_expensive();
       console.log(this.dishes);
       this.find_most_least_expensive();
+      this.dish_managment.updateCart(this.current_selection)
     });
 
     this.dish_managment.createDish$.subscribe((dish) => {
@@ -67,6 +71,7 @@ export class DishesComponent implements OnInit {
     } else {
       this.current_selection.set(id, 1);
     }
+    this.dish_managment.updateCart(this.current_selection);
   }
 
   removeItem(dish: any) {

@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { CursorError } from '@angular/compiler/src/ml_parser/lexer';
+import { Component, Input } from '@angular/core';
 import { DishManagmentService } from './dish-managment.service';
 
 export interface DishTemplate {
@@ -13,6 +14,10 @@ export interface DishTemplate {
   pictures: string[],
 }
 
+export enum Currency {
+  Euro="euro",
+  Dolar="dolar",
+}
 
 
 @Component({
@@ -22,11 +27,18 @@ export interface DishTemplate {
 })
 export class AppComponent {
   title = 'restaurant';
-
+  currency = Currency.Dolar;
   dishes: DishTemplate[] = [];
 
   constructor(private dish_service: DishManagmentService){
     this.dishes = dish_service.getDishes();
   }
 
+  euroSelected(){
+    this.currency = Currency.Euro;
+  }
+
+  dolarSelected(){
+    this.currency = Currency.Dolar;
+  }
 }

@@ -1,0 +1,13 @@
+<div id="container">
+  <h3>Koszyk:</h3>
+  <div *ngIf="this.selection_with_names.length > 0">
+    <div id="item-list">
+      <div *ngFor="let item of selection_with_names">
+        {{ item.name }} x {{ item.count }}
+      </div>
+    </div>
+  </div>
+  <div *ngIf="this.selection_with_names.length == 0">
+    Koszyk pusty...
+  </div>
+</div>

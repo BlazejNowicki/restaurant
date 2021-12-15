@@ -11,7 +11,12 @@
     <div>{{ item.cuisine | lowercase }}</div>
     <div>More info-></div>
   </div>
-  <div>Cena: {{ item.price | currency }}</div>
+  <div class="reviews">
+    <fa-icon [icon]="up" (click)="up_pressed()" [ngClass]="{'selected': this.up_selected}"></fa-icon>
+    <fa-icon [icon]="down" (click)="down_pressed()" [ngClass]="{'selected': this.down_selected}"></fa-icon>
+  </div>
+  <div *ngIf="currency == 'dolar'">Cena: {{ item.price | currency }}</div>
+  <div *ngIf="currency == 'euro'">Cena: {{ item.price*0.89 | currency:'EUR' }}</div>
   <div class="buttons">
     <button
       (click)="addItem()"

@@ -26,3 +26,22 @@ img {
 .cheap-border {
   border: 1px green solid;
 }
+
+.reviews {
+  display: flex;
+}
+
+fa-icon {
+  display: block;
+  border-radius: 5px;
+  padding: 5px;
+  margin: 5px;
+}
+
+.selected{
+  background-color: rgb(240, 217, 155);
+}
+
+.notselected{
+  background-color: none;
+}
