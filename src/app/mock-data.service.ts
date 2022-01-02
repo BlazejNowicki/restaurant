@@ -15,7 +15,7 @@ export class MockDataService {
       maximum_per_day: 10,
       description: "Klasyczna pizza: sos pomidorowy, ser.",
       price: 10,
-      pictures: ['../../assets/images/01.jpg'],
+      pictures: ['../../assets/images/01.jpg', '../../assets/images/01_2.jpg'],
     },
     {
       id: 2,

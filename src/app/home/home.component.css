@@ -1,0 +1,59 @@
+* {
+  box-sizing: border-box;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+}
+
+.label {
+  margin: 20px 0px 20px 0px;
+  font-size: 30px;
+  color: white;
+  -webkit-box-shadow: 0px 0px 17px -5px rgba(112, 73, 43, 0.6);
+  box-shadow: 0px 0px 17px -5px rgba(112, 73, 43, 0.6);
+  background-color: rgb(116, 75, 37);
+  padding: 10px;
+}
+
+img {
+  max-height: 400px;
+  margin: 10px;
+  -webkit-box-shadow: 2px 2px 18px 5px rgba(0, 0, 0, 0.43);
+  box-shadow: 2px 2px 18px 5px rgba(0, 0, 0, 0.43);
+}
+
+.ads > *{
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin: 20px 0px 20px 0px;
+  transition: 0.5s;
+}
+
+.ads > *:hover {
+  transform: scale(1.1);
+}
+
+.contact {
+  align-self: center;
+  margin: 50px 0px 200px 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 900px) {
+  .ads > * {
+    flex-direction: column;
+  }
+
+  .label {
+    font-size: 20px;
+  }
+
+  .ads > *:hover {
+    transform: none;
+  }
+}

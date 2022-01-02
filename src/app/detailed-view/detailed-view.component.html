@@ -1,0 +1,75 @@
+<div class="container">
+  <div class="details-section">
+    <div class="image-box">
+      <img src="{{ image_path }}" alt="Missing picture" />
+      <div *ngIf="currentPhoto != 0" id="prev" (click)="prevPhoto()">&#10094;</div>
+      <div *ngIf="currentPhoto != item.pictures.length-1" id="next" (click)="nextPhoto()">&#10095;</div>
+    </div>
+    <div class="details-buttons">
+      <div class="details">
+        <div>
+          <h2>{{ item.name | uppercase }}</h2>
+          <div>{{ "Kuchnia " + item.cuisine | uppercase }}</div>
+        </div>
+        <div class="kat-ing">
+          <div>Kategorie: {{ item.categories }}</div>
+          <div>Składniki: {{ item.ingredients }}</div>
+        </div>
+        <div>Opis: {{ item.description }}</div>
+        <a [routerLink]="['/menu']">
+          <button class="back">Wstecz</button>
+        </a>
+      </div>
+      <div class="price">
+        <div *ngIf="currency == 'dolar'">{{ item.price | currency }}</div>
+        <div *ngIf="currency == 'euro'">
+          {{ item.price * 0.89 | currency: "EUR" }}
+        </div>
+      </div>
+      <div class="reviews">
+        <fa-icon
+          [icon]="up"
+          (click)="upPressed()"
+          [ngClass]="{ selected: this.up_selected }"
+        ></fa-icon>
+        {{ reaction.likes }}
+        <fa-icon
+          [icon]="down"
+          (click)="downPressed()"
+          [ngClass]="{ selected: this.down_selected }"
+        ></fa-icon>
+        {{ reaction.dislikes }}
+      </div>
+      <div class="buttons">
+        <button
+          (click)="addToCart()"
+          [style.visibility]="
+            count != item.maximum_per_day ? 'visible' : 'hidden'
+          "
+        >
+          +
+        </button>
+        <button
+          (click)="removeFromCart()"
+          [style.visibility]="count != 0 ? 'visible' : 'hidden'"
+        >
+          -
+        </button>
+      </div>
+      <div
+        class="counter"
+        [hidden]="item.maximum_per_day == 0"
+        [ngClass]="{
+          'orange-border': item.maximum_per_day! - count! < 3,
+          'red-border': item.maximum_per_day == count && count != 0
+        }"
+      >
+        {{ count }}
+      </div>
+    </div>
+  </div>
+  <div class="reviews-section">
+    <app-new-review-form [id]="id"></app-new-review-form>
+    <app-reviews [id]="id"></app-reviews>
+  </div>
+</div>

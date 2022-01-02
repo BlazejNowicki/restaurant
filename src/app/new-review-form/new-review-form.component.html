@@ -1,0 +1,44 @@
+<h2>Dodaj opinie</h2>
+<form [formGroup]="reviewForm" (ngSubmit)="onSubmit()" novalidate>
+  <p>
+    <label for="nick">Nick</label>
+    <input type="text" id="nick" name="nick" formControlName="nick" />
+  </p>
+  <div *ngIf="!nick?.valid && (nick?.dirty || nick?.touched)">
+    <div [hidden]="!nick!.errors!['required']" class="error">Pole wymagane</div>
+  </div>
+  <p>
+    <label for="title">Tytuł</label>
+    <input type="text" id="title" name="title" formControlName="title" />
+  </p>
+  <div *ngIf="!title?.valid && (title?.dirty || title?.touched)">
+    <div [hidden]="!title!.errors!['required']" class="error">Pole wymagane</div>
+  </div>
+  <p>
+    <label for="body">Treść</label>
+    <textarea
+      type="text"
+      id="body"
+      name="body"
+      formControlName="body"
+      (blur)="onClickvalidate()"
+    ></textarea>
+  </p>
+  <!-- <div *ngIf="!body?.valid && (body?.dirty ||body?.touched)"> -->
+  <div *ngIf="showerror" class="error">
+    <!-- <div
+      [hidden]="
+        reviewForm.controls['body'].hasError('maxlength') ||
+        reviewForm.controls['body'].hasError('minlength')
+      "
+    > -->
+    Wymagana długość od 50 do 500 znaków
+    <!-- </div> -->
+  </div>
+  <p>
+    <label for="date">Data zakupu:</label>
+    <input type="date" id="date" name="date" formControlName="date" />
+  </p>
+
+  <button type="submit" [disabled]="!reviewForm.valid">Submit</button>
+</form>

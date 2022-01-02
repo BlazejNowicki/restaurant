@@ -1,15 +1,15 @@
+<!-- <div>
+  <label for="size">Page size</label>
+  <select (change)="onPageSizeChange($event)">
+    <option *ngFor="let i of sizes">{{ i }}</option>
+  </select>
+</div> -->
 <div [hidden]="this.dishes.length == 0">
   <app-item
     *ngFor="let dish of dishes"
     [item]="dish"
-    [count]="
-      current_selection.has(dish.id) ? current_selection.get(dish.id) : 0
-    "
-    (add_event)="addItem($event)"
-    (remove_event)="removeItem($event)"
     [expensive]="most_expensive_price"
     [cheap]="cheapest_price"
-    [currency]="currency"
   ></app-item>
 </div>
 <!-- warunek poniżej będzie do zmiany po dodaniu filtrowania -->

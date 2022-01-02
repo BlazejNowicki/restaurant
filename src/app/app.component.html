@@ -1,7 +1,13 @@
 <h1>Restauracja</h1>
+<nav>
+  <a [routerLink]="['home']">Strona główna</a>
+  <a [routerLink]="['menu']">Menu</a>
+  <a [routerLink]="['new-dish']">Nowe danie</a>
+  <a [routerLink]="['cart']">Koszyk</a>
+</nav>
 <div class="container">
-  <app-cart [dishes]="dishes"></app-cart>
-  <div class="currency">
+  <!-- <app-cart [dishes]="dishes"></app-cart> -->
+  <div *ngIf="this.currentUrl != '/home'" class="currency">
     <div>Waluta:</div>
     <input
       type="radio"
@@ -21,6 +27,5 @@
     />
     <label for="euro">Euro</label>
   </div>
-  <app-dishes [dishes]="dishes" [currency]="currency"></app-dishes>
-  <app-new-dish-form></app-new-dish-form>
+  <router-outlet></router-outlet>
 </div>

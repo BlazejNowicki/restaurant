@@ -1,12 +1,4 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnDestroy,
-  OnInit,
-  Output,
-} from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Component, Input, OnInit } from '@angular/core';
 import { Currency, DishTemplate } from '../app.component';
 import { DishManagmentService } from '../dish-managment.service';
 import { faThumbsUp, faThumbsDown } from '@fortawesome/free-solid-svg-icons';
@@ -17,10 +9,6 @@ import { faThumbsUp, faThumbsDown } from '@fortawesome/free-solid-svg-icons';
   styleUrls: ['./item.component.css'],
 })
 export class ItemComponent implements OnInit {
-  down = faThumbsDown;
-  up = faThumbsUp;
-  up_selected: boolean = false;
-  down_selected: boolean = false;
 
   @Input() item: DishTemplate = {
     id: 0,
@@ -30,39 +18,33 @@ export class ItemComponent implements OnInit {
     price: 1,
     pictures: [],
   };
-  @Input() count: number | undefined = 0;
   @Input() expensive = 0;
   @Input() cheap = 0;
-  @Input() currency = Currency.Euro;
+  currency: Currency;
+  count: number = 0;
 
-  @Output() add_event = new EventEmitter();
-  @Output() remove_event = new EventEmitter();
+  constructor(private dish_service: DishManagmentService) {
+    this.dish_service.cartChanged$.subscribe((new_cart) => {
+      this.count = this.dish_service.numberInCart(this.item.id);
+    });
 
-  constructor(private dish_service: DishManagmentService) {}
-
-  ngOnInit(): void {}
-
-  addItem(): void {
-    console.log("inside item ID:")
-    console.log(this.item);
-    this.add_event.emit(this.item);
+    this.currency = this.dish_service.getCurrercy();
+    this.dish_service.currencyChanged$.subscribe(c => this.currency = c);
   }
 
-  removeItem() {
-    this.remove_event.emit(this.item);
+  ngOnInit(): void {
+    this.count = this.dish_service.numberInCart(this.item.id);
   }
 
-  deleteItem() {
-    this.dish_service.deleteSelectedDish(this.item);
+  addToCart(): void {
+    this.dish_service.addToCart(this.item.id);
   }
 
-  up_pressed() {
-    this.up_selected = !this.up_selected;
-    this.down_selected = false;
+  removeFromCart(): void {
+    this.dish_service.removeFromCart(this.item.id);
   }
 
-  down_pressed() {
-    this.down_selected = !this.down_selected;
-    this.up_selected = false;
+  removeFromMenu(): void {
+    this.dish_service.removeFromMenu(this.item.id);
   }
 }

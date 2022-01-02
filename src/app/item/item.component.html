@@ -5,41 +5,40 @@
     cheap != expensive && item.price == expensive ? 'expensive-border' : ''
   ]"
 >
-  <img [src]="item.pictures[0]" alt="Missing picture" />
+  <a [routerLink]="['/menu', this.item.id]">
+    <img [src]="item.pictures[0]" alt="Missing picture" />
+  </a>
   <div>
     <div>{{ item.name | uppercase }}</div>
     <div>{{ item.cuisine | lowercase }}</div>
-    <!-- <div>More info-></div> -->
-  </div>
-  <div class="reviews">
-    <fa-icon [icon]="up" (click)="up_pressed()" [ngClass]="{'selected': this.up_selected}"></fa-icon>
-    <fa-icon [icon]="down" (click)="down_pressed()" [ngClass]="{'selected': this.down_selected}"></fa-icon>
   </div>
   <div *ngIf="currency == 'dolar'">Cena: {{ item.price | currency }}</div>
-  <div *ngIf="currency == 'euro'">Cena: {{ item.price*0.89 | currency:'EUR' }}</div>
+  <div *ngIf="currency == 'euro'">
+    Cena: {{ item.price * 0.89 | currency: "EUR" }}
+  </div>
   <div class="buttons">
     <button
-      (click)="addItem()"
+      (click)="addToCart()"
       [style.visibility]="count != item.maximum_per_day ? 'visible' : 'hidden'"
     >
       +
     </button>
     <button
-      (click)="removeItem()"
+      (click)="removeFromCart()"
       [style.visibility]="count != 0 ? 'visible' : 'hidden'"
     >
       -
     </button>
-    <button (click)="deleteItem()">usuń</button>
+    <button (click)="removeFromMenu()">usuń</button>
   </div>
   <div [hidden]="item.maximum_per_day != 0">Produkt chwilowo niedostępny</div>
-  <!-- <div [hidden]="item.maximum_per_day != count || count == 0">
-    Osiągnięto limit dzienny
-  </div> -->
   <div
     class="counter"
     [hidden]="item.maximum_per_day == 0"
-    [ngClass]="{ 'orange-border': item.maximum_per_day! - count! < 3, 'red-border': item.maximum_per_day == count && count != 0}"
+    [ngClass]="{
+      'orange-border': item.maximum_per_day! - count! < 3,
+      'red-border': item.maximum_per_day == count && count != 0
+    }"
   >
     {{ count }}
   </div>

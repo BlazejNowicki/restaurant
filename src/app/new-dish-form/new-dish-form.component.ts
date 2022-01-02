@@ -6,7 +6,7 @@ import { DishManagmentService } from '../dish-managment.service';
 @Component({
   selector: 'app-new-dish-form',
   templateUrl: './new-dish-form.component.html',
-  styleUrls: ['./new-dish-form.component.css']
+  styleUrls: ['./new-dish-form.component.css'],
 })
 export class NewDishFormComponent {
   dishForm = this.fb.group({
@@ -14,17 +14,24 @@ export class NewDishFormComponent {
     cusine: ['', Validators.required],
     maximum_per_day: [10, [Validators.min(1), Validators.max(1000)]],
     price: [5, [Validators.min(1), Validators.max(1000)]],
-  })
+  });
 
-  constructor(private fb: FormBuilder, private dish_service: DishManagmentService) { }
+  constructor(
+    private fb: FormBuilder,
+    private dish_service: DishManagmentService
+  ) {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
-  onSubmit(){
+  onSubmit(): void {
     console.log(this.dishForm.value);
-    this.dish_service.createNewDish(this.dishForm.value);
+    let tmp = this.dishForm.value;
+    this.dish_service.addToMenu(
+      tmp.name,
+      tmp.cusine,
+      tmp.maximum_per_day,
+      tmp.price
+    );
     this.dishForm.reset();
   }
-
 }

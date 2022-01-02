@@ -1,6 +1,6 @@
 h1 {
   text-align: center;
-  color: rgb(223, 219, 219);
+  color: #dfdbdb;
   background-color: rgb(82, 71, 57);
   padding: 20px;
   font-size: 35px;
@@ -20,4 +20,28 @@ h1 {
 .container {
   max-width: 1500px;
   margin: 0px auto 0px auto;
+}
+
+a {
+  display: block;
+  text-decoration: none;
+  padding: 10px;
+  color: black;
+}
+
+a:hover {
+  background-color: rgba(0, 0, 0, 0.171);
+}
+
+nav {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+@media(max-width: 600px){
+  nav{
+    flex-direction: column;
+  }
 }
