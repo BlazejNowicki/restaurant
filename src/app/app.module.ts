@@ -14,6 +14,7 @@ import { HomeComponent } from './home/home.component';
 import { DetailedViewComponent } from './detailed-view/detailed-view.component';
 import { NewReviewFormComponent } from './new-review-form/new-review-form.component';
 import { ReviewsComponent } from './reviews/reviews.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { ReviewsComponent } from './reviews/reviews.component';
     HomeComponent,
     DetailedViewComponent,
     NewReviewFormComponent,
-    ReviewsComponent
+    ReviewsComponent,
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule,
