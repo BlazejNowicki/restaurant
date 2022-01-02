@@ -1,0 +1,40 @@
+.settings {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.settings > * {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+}
+
+label, select {
+  display: block;
+  padding: 5px;
+}
+
+.arrow{
+  font-size: 30px;
+  padding: 10px;
+}
+
+#counter {
+  font-size: 20px;
+}
+
+.bottom {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.bottom > * {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

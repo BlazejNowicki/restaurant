@@ -1,12 +1,19 @@
-<!-- <div>
-  <label for="size">Page size</label>
-  <select (change)="onPageSizeChange($event)">
-    <option *ngFor="let i of sizes">{{ i }}</option>
-  </select>
-</div> -->
+<div class="settings">
+  <div id="changing_size">
+    <label for="size">Elementów na stronie</label>
+    <select (change)="onPageSizeChange($event)">
+      <option *ngFor="let i of sizes">{{ i }}</option>
+    </select>
+  </div>
+  <div>
+    <div [hidden]="page <= 0" id="prev" (click)="prev()" class="arrow">&#10094;</div>
+    <div id="counter">{{ page+1 }}</div>
+    <div [hidden]="!show_next" id="next" (click)="next()" class="arrow">&#10095;</div>
+  </div>
+</div>
 <div [hidden]="this.dishes.length == 0">
   <app-item
-    *ngFor="let dish of dishes"
+    *ngFor="let dish of selection"
     [item]="dish"
     [expensive]="most_expensive_price"
     [cheap]="cheapest_price"
@@ -14,3 +21,10 @@
 </div>
 <!-- warunek poniżej będzie do zmiany po dodaniu filtrowania -->
 <div [hidden]="this.dishes.length != 0">Brak pozycji do wyświetlenia. :c</div>
+<div class="bottom">
+  <div>
+    <div [hidden]="page <= 0" id="prev" (click)="prev()" class="arrow">&#10094;</div>
+    <div id="counter">{{ page+1 }}</div>
+    <div [hidden]="!show_next" id="next" (click)="next()" class="arrow">&#10095;</div>
+  </div>
+</div>
