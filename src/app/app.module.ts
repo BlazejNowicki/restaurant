@@ -15,6 +15,11 @@ import { DetailedViewComponent } from './detailed-view/detailed-view.component';
 import { NewReviewFormComponent } from './new-review-form/new-review-form.component';
 import { ReviewsComponent } from './reviews/reviews.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { initializeApp,provideFirebaseApp } from '@angular/fire/app';
+import { environment } from '../environments/environment';
+import { provideFirestore,getFirestore } from '@angular/fire/firestore';
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 
 @NgModule({
   declarations: [
@@ -34,6 +39,9 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
     ReactiveFormsModule,
     FontAwesomeModule,
     AppRoutingModule,
+    provideFirebaseApp(() => initializeApp(environment.firebase)),
+    provideFirestore(() => getFirestore()),
+    AngularFirestoreModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
