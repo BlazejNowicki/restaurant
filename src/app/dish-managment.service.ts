@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Subject } from 'rxjs';
 import { Currency, DishTemplate } from './app.component';
-import { MockDataService } from './mock-data.service';
 import { ReviewManagmentService } from './review-managment.service';
 
 @Injectable({
@@ -19,8 +19,24 @@ export class DishManagmentService {
   cartChanged$ = this.cart_changed.asObservable();
   currencyChanged$ = this.currency_changed.asObservable();
 
-  constructor(private mock_data: MockDataService, private review_service: ReviewManagmentService) {
-    this.menu = mock_data.getMockData();
+  constructor(
+    private review_service: ReviewManagmentService,
+    private firestore: AngularFirestore
+  ) {
+    this.firestore
+      .collection('dishes')
+      .snapshotChanges()
+      .subscribe((res) => {
+        console.log(res);
+        let new_menu = [];
+        for(let item of res){
+          new_menu.push(item.payload.doc.data() as DishTemplate);
+        }
+        this.menu = new_menu;
+        console.log('aaaa');
+        console.log(this.menu);
+        this.menu_changed.next(this.menu);
+      });
   }
 
   public getMenu(): DishTemplate[] {
@@ -31,8 +47,8 @@ export class DishManagmentService {
     return this.cart;
   }
 
-  public getDishById(id: number): DishTemplate{
-    return this.menu.filter(item => item.id == id)[0];
+  public getDishById(id: number): DishTemplate {
+    return this.menu.filter((item) => item.id == id)[0];
   }
 
   public numberInCart(id: number): number {
@@ -42,11 +58,11 @@ export class DishManagmentService {
     return 0;
   }
 
-  getCurrercy(): Currency{
+  getCurrercy(): Currency {
     return this.currency;
   }
 
-  public setCurrency(currency: Currency){
+  public setCurrency(currency: Currency) {
     this.currency = currency;
     this.currency_changed.next(this.currency);
   }
@@ -80,7 +96,7 @@ export class DishManagmentService {
   }
 
   public removeFromMenu(id: number): void {
-    this.menu = this.menu.filter(e => e.id != id);
+    this.menu = this.menu.filter((e) => e.id != id);
     this.cart.delete(id);
     this.review_service.dishDeleted(id);
     this.menu_changed.next(this.menu);

@@ -40,6 +40,7 @@ import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
     FontAwesomeModule,
     AppRoutingModule,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
+    AngularFireModule.initializeApp(environment.firebase),
     provideFirestore(() => getFirestore()),
     AngularFirestoreModule,
   ],
