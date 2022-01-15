@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { docSnapshots } from '@angular/fire/firestore';
 import { ActivatedRoute } from '@angular/router';
 import { faThumbsDown, faThumbsUp } from '@fortawesome/free-solid-svg-icons';
-import { map } from 'rxjs';
+import { map, Subscription } from 'rxjs';
 import { Currency, DishTemplate } from '../app.component';
 import { DishManagmentService } from '../dish-managment.service';
 import { Reaction, ReviewManagmentService } from '../review-managment.service';
@@ -12,7 +12,7 @@ import { Reaction, ReviewManagmentService } from '../review-managment.service';
   templateUrl: './detailed-view.component.html',
   styleUrls: ['./detailed-view.component.css'],
 })
-export class DetailedViewComponent implements OnInit {
+export class DetailedViewComponent implements OnInit, OnDestroy {
   id: string;
   item: DishTemplate = {
     id: '1234',
@@ -44,11 +44,6 @@ export class DetailedViewComponent implements OnInit {
     private review_service: ReviewManagmentService
   ) {
     this.id = this.activeRoute.snapshot.paramMap.get('id')!;
-    // this.reaction = this.review_service.getReactionById(this.id);
-
-    // this.review_service.reactionChanged$.subscribe((t) => {
-    //   this.reaction = this.review_service.getReactionById(this.id);
-    // });
   }
 
   ngOnInit(): void {

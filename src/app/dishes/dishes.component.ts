@@ -1,5 +1,5 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { map } from 'rxjs';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { map, Subscription } from 'rxjs';
 import { Currency, DishTemplate } from '../app.component';
 import { DishManagmentService } from '../dish-managment.service';
 
@@ -9,7 +9,7 @@ import { DishManagmentService } from '../dish-managment.service';
   styleUrls: ['./dishes.component.css'],
   providers: [],
 })
-export class DishesComponent implements OnInit{
+export class DishesComponent implements OnInit, OnDestroy {
   dishes: DishTemplate[] = [];
   selection: DishTemplate[] = [];
   currency: Currency = Currency.Dolar;
@@ -19,8 +19,10 @@ export class DishesComponent implements OnInit{
 
   page_size: number = 5;
   page: number = 0;
-  sizes: number[] = [5,10,15];
+  sizes: number[] = [5, 10, 15];
   show_next: boolean = false;
+
+  menuSubscription: Subscription | null = null;
 
   constructor(private dish_managment: DishManagmentService) {}
 
@@ -28,18 +30,26 @@ export class DishesComponent implements OnInit{
     this.getDishes();
   }
 
-  getDishes(){
-    this.dish_managment.getMenu().snapshotChanges().pipe(map(changes =>
-      changes.map(c =>
-        ({ id:c.payload.doc.id, ...c.payload.doc.data() } as DishTemplate)
+  getDishes() {
+    this.menuSubscription = this.dish_managment
+      .getMenu()
+      .snapshotChanges()
+      .pipe(
+        map((changes) =>
+          changes.map(
+            (c) =>
+              ({
+                id: c.payload.doc.id,
+                ...c.payload.doc.data(),
+              } as DishTemplate)
+          )
+        )
       )
-    )).subscribe(
-      data => {
+      .subscribe((data) => {
         this.dishes = data;
         console.log(data);
         this.refreshPage();
-      }
-    );
+      });
   }
 
   find_most_least_expensive() {
@@ -52,20 +62,23 @@ export class DishesComponent implements OnInit{
     }, 1000);
   }
 
-  prev(){
+  prev() {
     this.page -= 1;
     this.refreshPage();
   }
 
-  next(){
+  next() {
     this.page += 1;
     this.refreshPage();
   }
 
-  refreshPage(){
+  refreshPage() {
     this.find_most_least_expensive();
     this.show_next = (this.page + 1) * this.page_size < this.dishes.length;
-    this.selection = this.dishes.slice(this.page * this.page_size, (this.page + 1) * this.page_size);
+    this.selection = this.dishes.slice(
+      this.page * this.page_size,
+      (this.page + 1) * this.page_size
+    );
   }
 
   onPageSizeChange(deviceValue: any) {
@@ -74,5 +87,9 @@ export class DishesComponent implements OnInit{
     console.log(this.page_size);
     this.page = 0;
     this.refreshPage();
+  }
+
+  ngOnDestroy(): void {
+    if (this.menuSubscription) this.menuSubscription.unsubscribe();
   }
 }

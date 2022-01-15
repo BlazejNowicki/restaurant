@@ -1,7 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Timestamp } from 'firebase/firestore';
-import { map } from 'rxjs';
+import { map, Subscription } from 'rxjs';
 import { Review, ReviewManagmentService } from '../review-managment.service';
 
 @Component({
@@ -9,9 +8,10 @@ import { Review, ReviewManagmentService } from '../review-managment.service';
   templateUrl: './reviews.component.html',
   styleUrls: ['./reviews.component.css'],
 })
-export class ReviewsComponent implements OnInit {
+export class ReviewsComponent implements OnInit, OnDestroy {
   @Input() id: string = '-1';
   reviews: Review[] = [];
+  reviewSubscripton: Subscription | null = null;
 
   constructor(
     private reviewService: ReviewManagmentService,
@@ -21,12 +21,12 @@ export class ReviewsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.reviewService
+    this.reviewSubscripton = this.reviewService
       .getReviews()
       .valueChanges()
       .pipe(
         map((item) => {
-          return item.filter(x => x.dishId == this.id);
+          return item.filter((x) => x.dishId == this.id);
         })
       )
       .subscribe((data) => {
@@ -41,5 +41,9 @@ export class ReviewsComponent implements OnInit {
           }
         });
       });
+  }
+
+  ngOnDestroy(): void {
+    if (this.reviewSubscripton) this.reviewSubscripton.unsubscribe();
   }
 }

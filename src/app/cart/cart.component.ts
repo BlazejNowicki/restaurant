@@ -1,6 +1,6 @@
 import { CurrencyPipe } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
-import { map } from 'rxjs';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { map, Subscription } from 'rxjs';
 import { Currency, DishTemplate } from '../app.component';
 import { DishManagmentService } from '../dish-managment.service';
 
@@ -9,7 +9,7 @@ import { DishManagmentService } from '../dish-managment.service';
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.css'],
 })
-export class CartComponent implements OnInit {
+export class CartComponent implements OnInit, OnDestroy {
   dishes: DishTemplate[] = [];
   current_selection: Map<string, number>;
   selection_with_names: { name: string; count: number; price: number }[] = [];
@@ -17,16 +17,20 @@ export class CartComponent implements OnInit {
   value: number = 0;
   currency: Currency;
 
+  cartSubscription: Subscription | null = null;
+  currencySubscription: Subscription | null = null;
+  menuSubscription: Subscription | null = null;
+
   constructor(private dish_managment: DishManagmentService) {
     this.current_selection = this.dish_managment.getCart();
 
-    this.dish_managment.cartChanged$.subscribe((new_selection) => {
+    this.cartSubscription = this.dish_managment.cartChanged$.subscribe((new_selection) => {
       this.current_selection = new_selection;
       this.showCart();
     });
 
     this.currency = this.dish_managment.getCurrercy();
-    this.dish_managment.currencyChanged$.subscribe((c) => (this.currency = c));
+    this.currencySubscription = this.dish_managment.currencyChanged$.subscribe((c) => (this.currency = c));
   }
 
   showCart() {
@@ -48,7 +52,7 @@ export class CartComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.dish_managment
+    this.menuSubscription = this.dish_managment
       .getMenu()
       .snapshotChanges()
       .pipe(
@@ -67,5 +71,11 @@ export class CartComponent implements OnInit {
         console.log(data);
         this.showCart();
       });
+  }
+
+  ngOnDestroy(): void {
+    if(this.cartSubscription) this.cartSubscription.unsubscribe();
+    if(this.menuSubscription) this.menuSubscription.unsubscribe();
+    if(this.currencySubscription) this.currencySubscription.unsubscribe();
   }
 }
