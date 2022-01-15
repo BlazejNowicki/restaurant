@@ -12,8 +12,12 @@ export class NewDishFormComponent {
   dishForm = this.fb.group({
     name: ['', Validators.required],
     cusine: ['', Validators.required],
+    categories: ['', Validators.required],
+    ingredients: ['', Validators.required],
     maximum_per_day: [10, [Validators.min(1), Validators.max(1000)]],
     price: [5, [Validators.min(1), Validators.max(1000)]],
+    description: ['', Validators.required],
+    pictures: [''],
   });
 
   constructor(
@@ -29,8 +33,12 @@ export class NewDishFormComponent {
     this.dish_service.addToMenu(
       tmp.name,
       tmp.cusine,
+      tmp.categories.trim().split(','),
+      tmp.ingredients.trim().split(','),
       tmp.maximum_per_day,
-      tmp.price
+      tmp.price,
+      tmp.description,
+      tmp.pictures.trim().split(',')
     );
     this.dishForm.reset();
   }

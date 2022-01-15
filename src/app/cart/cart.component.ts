@@ -9,15 +9,15 @@ import { DishManagmentService } from '../dish-managment.service';
   styleUrls: ['./cart.component.css'],
 })
 export class CartComponent implements OnInit {
-  dishes: DishTemplate[];
-  current_selection: Map<number, number>;
-  selection_with_names: { name: String; count: number; price: number}[] = [];
+  dishes: DishTemplate[] = [];
+  current_selection: Map<string, number>;
+  selection_with_names: { name: string; count: number; price: number}[] = [];
   sum: number = 0;
   value: number = 0;
   currency: Currency;
 
   constructor(private dish_managment: DishManagmentService) {
-    this.dishes = this.dish_managment.getMenu();
+    // this.dishes = this.dish_managment.getMenu();
     this.current_selection = this.dish_managment.getCart();
     this.showCart();
 

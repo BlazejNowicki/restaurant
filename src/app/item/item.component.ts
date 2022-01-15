@@ -11,7 +11,7 @@ import { faThumbsUp, faThumbsDown } from '@fortawesome/free-solid-svg-icons';
 export class ItemComponent implements OnInit {
 
   @Input() item: DishTemplate = {
-    id: 0,
+    id: '0',
     name: 'none',
     cuisine: 'międzynarodowa',
     maximum_per_day: 1,
@@ -22,6 +22,7 @@ export class ItemComponent implements OnInit {
   @Input() cheap = 0;
   currency: Currency;
   count: number = 0;
+  missing_picture_path = "/assets/images/missing.jpeg";
 
   constructor(private dish_service: DishManagmentService) {
     this.dish_service.cartChanged$.subscribe((new_cart) => {

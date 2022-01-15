@@ -9,7 +9,7 @@ import { ReviewManagmentService } from '../review-managment.service';
   styleUrls: ['./new-review-form.component.css'],
 })
 export class NewReviewFormComponent implements OnInit {
-  id: number;
+  id: string;
   showerror: boolean = false;
 
   reviewForm = this.fb.group({
@@ -27,7 +27,7 @@ export class NewReviewFormComponent implements OnInit {
   });
 
   constructor(private fb: FormBuilder, private reviewService: ReviewManagmentService, private _Activatedroute: ActivatedRoute) {
-    this.id = parseInt(_Activatedroute.snapshot.paramMap.get('id')!);
+    this.id = _Activatedroute.snapshot.paramMap.get('id')!;
   }
 
   ngOnInit(): void {}

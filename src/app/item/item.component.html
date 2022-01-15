@@ -5,9 +5,11 @@
     cheap != expensive && item.price == expensive ? 'expensive-border' : ''
   ]"
 >
-  <a [routerLink]="['/menu', this.item.id]">
-    <img [src]="item.pictures[0]" alt="Missing picture" />
-  </a>
+  <div class="picture-box">
+    <a [routerLink]="['/menu', this.item.id]">
+      <img [src]="item.pictures[0]" alt="Missing picture" />
+    </a>
+  </div>
   <div>
     <div>{{ item.name | uppercase }}</div>
     <div>{{ item.cuisine | lowercase }}</div>

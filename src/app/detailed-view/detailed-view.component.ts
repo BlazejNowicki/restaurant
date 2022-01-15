@@ -11,9 +11,18 @@ import { Reaction, ReviewManagmentService } from '../review-managment.service';
   styleUrls: ['./detailed-view.component.css'],
 })
 export class DetailedViewComponent implements OnInit {
-  id: number;
-  item: DishTemplate;
-  image_path: String;
+  id: string;
+  item: DishTemplate = {
+    id: "1234",
+    name: 'Biryani',
+    cuisine: 'indyjska',
+    categories: ['danie główne', 'mięsne'],
+    maximum_per_day: 16,
+    price: 8,
+    description: '',
+    pictures: ['https://i.ibb.co/G3Vyp4V/08.jpg'],
+  };
+  image_path: String = '';
   down = faThumbsDown;
   up = faThumbsUp;
   up_selected: boolean = false;
@@ -28,13 +37,21 @@ export class DetailedViewComponent implements OnInit {
     private dish_service: DishManagmentService,
     private review_service: ReviewManagmentService
   ) {
-    this.id = parseInt(_Activatedroute.snapshot.paramMap.get('id')!);
-    this.item = this.dish_service.getDishById(this.id);
-    this.image_path = this.item.pictures[this.currentPhoto];
+    this.id = _Activatedroute.snapshot.paramMap.get('id')!;
+    console.log(this.id);
+    this.dish_service.getDishById(this.id);
     this.reaction = this.review_service.getReactionById(this.id);
 
+    this.dish_service.getDishById(this.id).ref.get().then(
+      doc => {
+        this.item = {id:doc.id, ...doc.data()} as DishTemplate;
+        this.refreshPicture();
+      }
+    ).catch(err => console.error(err));
+
+
     this.dish_service.cartChanged$.subscribe((new_cart) => {
-      this.count = this.dish_service.numberInCart(this.item.id);
+      // this.count = this.dish_service.numberInCart(this.item.id);
     });
 
     this.review_service.reactionChanged$.subscribe((t) => {
@@ -53,6 +70,10 @@ export class DetailedViewComponent implements OnInit {
     } else if (cache == -1) {
       this.down_selected = true;
     }
+  }
+
+  refreshPicture(){
+    this.image_path = this.item.pictures[this.currentPhoto];
   }
 
   addToCart(): void {
@@ -105,11 +126,11 @@ export class DetailedViewComponent implements OnInit {
 
   nextPhoto(){
     this.currentPhoto += 1;
-    this.image_path = this.item.pictures[this.currentPhoto];
+    this.refreshPicture();
   }
 
   prevPhoto(){
     this.currentPhoto -= 1;
-    this.image_path = this.item.pictures[this.currentPhoto];
+    this.refreshPicture();
   }
 }

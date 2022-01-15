@@ -11,6 +11,7 @@ img {
 
 .image-box {
   display: flex;
+  min-width: 200px;
   flex-direction: column;
   align-content: center;
   align-items: center;

@@ -1,4 +1,6 @@
+import { conditionallyCreateMapObjectLiteral } from '@angular/compiler/src/render3/view/util';
 import { Component, Input, OnInit } from '@angular/core';
+import { map } from 'rxjs';
 import { Currency, DishTemplate } from '../app.component';
 import { DishManagmentService } from '../dish-managment.service';
 
@@ -21,15 +23,24 @@ export class DishesComponent implements OnInit {
   sizes: number[] = [5,10,15];
   show_next: boolean = false;
 
-  constructor(private dish_managment: DishManagmentService) {
-    this.dishes = dish_managment.getMenu();
+  constructor(private dish_managment: DishManagmentService) {}
 
-    this.dish_managment.menuChanged$.subscribe((new_menu) => {
-      this.dishes = new_menu;
-      this.find_most_least_expensive();
-    });
+  ngOnInit(): void {
+    this.getDishes();
+  }
 
-    this.pageChanged();
+  getDishes(){
+    this.dish_managment.getMenu().snapshotChanges().pipe(map(changes =>
+      changes.map(c =>
+        ({ id:c.payload.doc.id, ...c.payload.doc.data() } as DishTemplate)
+      )
+    )).subscribe(
+      data => {
+        this.dishes = data;
+        console.log(data);
+        this.refreshPage();
+      }
+    );
   }
 
   find_most_least_expensive() {
@@ -42,23 +53,18 @@ export class DishesComponent implements OnInit {
     }, 1000);
   }
 
-  ngOnInit(): void {}
-
-  ngOnChanges(): void {
-    this.find_most_least_expensive();
-  }
-
   prev(){
     this.page -= 1;
-    this.pageChanged();
+    this.refreshPage();
   }
 
   next(){
     this.page += 1;
-    this.pageChanged();
+    this.refreshPage();
   }
 
-  pageChanged(){
+  refreshPage(){
+    this.find_most_least_expensive();
     this.show_next = (this.page + 1) * this.page_size < this.dishes.length;
     this.selection = this.dishes.slice(this.page * this.page_size, (this.page + 1) * this.page_size);
   }
@@ -68,6 +74,6 @@ export class DishesComponent implements OnInit {
     this.page_size = parseInt(deviceValue.target.value);
     console.log(this.page_size);
     this.page = 0;
-    this.pageChanged();
+    this.refreshPage();
   }
 }

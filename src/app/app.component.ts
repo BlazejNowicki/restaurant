@@ -8,7 +8,7 @@ import { DishManagmentService } from './dish-managment.service';
 import { MockDataService } from './mock-data.service';
 
 export interface DishTemplate {
-  id: number;
+  id: string;
   name: string;
   cuisine: string;
   categories?: string[];
@@ -41,7 +41,7 @@ export class AppComponent implements OnDestroy {
     private mock_data: MockDataService,
     private router: Router
   ) {
-    this.dishes = mock_data.getMockData();
+    // this.dishes = mock_data.getMockData();hj
     this.currentUrl = this.router.url;
 
     this.event$ = this.router.events.subscribe((event: NavigationEvent) => {
