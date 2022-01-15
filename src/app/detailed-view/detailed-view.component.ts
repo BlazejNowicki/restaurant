@@ -12,7 +12,7 @@ import { Reaction, ReviewManagmentService } from '../review-managment.service';
   templateUrl: './detailed-view.component.html',
   styleUrls: ['./detailed-view.component.css'],
 })
-export class DetailedViewComponent implements OnInit, OnDestroy {
+export class DetailedViewComponent implements OnInit{
   id: string;
   item: DishTemplate = {
     id: '1234',
