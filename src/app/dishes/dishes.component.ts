@@ -1,5 +1,4 @@
-import { conditionallyCreateMapObjectLiteral } from '@angular/compiler/src/render3/view/util';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { map } from 'rxjs';
 import { Currency, DishTemplate } from '../app.component';
 import { DishManagmentService } from '../dish-managment.service';
@@ -10,7 +9,7 @@ import { DishManagmentService } from '../dish-managment.service';
   styleUrls: ['./dishes.component.css'],
   providers: [],
 })
-export class DishesComponent implements OnInit {
+export class DishesComponent implements OnInit{
   dishes: DishTemplate[] = [];
   selection: DishTemplate[] = [];
   currency: Currency = Currency.Dolar;

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { docSnapshots } from '@angular/fire/firestore';
 import { ActivatedRoute } from '@angular/router';
 import { faThumbsDown, faThumbsUp } from '@fortawesome/free-solid-svg-icons';
+import { map } from 'rxjs';
 import { Currency, DishTemplate } from '../app.component';
 import { DishManagmentService } from '../dish-managment.service';
 import { Reaction, ReviewManagmentService } from '../review-managment.service';
@@ -13,7 +15,7 @@ import { Reaction, ReviewManagmentService } from '../review-managment.service';
 export class DetailedViewComponent implements OnInit {
   id: string;
   item: DishTemplate = {
-    id: "1234",
+    id: '1234',
     name: 'Biryani',
     cuisine: 'indyjska',
     categories: ['danie główne', 'mięsne'],
@@ -29,40 +31,58 @@ export class DetailedViewComponent implements OnInit {
   down_selected: boolean = false;
   currency: Currency = Currency.Dolar;
   count: number = 0;
-  reaction: Reaction;
+  reaction: Reaction = {
+    dishId: '213423',
+    likes: 10,
+    dislikes: 3,
+  };
   currentPhoto: number = 0;
 
   constructor(
-    private _Activatedroute: ActivatedRoute,
+    private activeRoute: ActivatedRoute,
     private dish_service: DishManagmentService,
     private review_service: ReviewManagmentService
   ) {
-    this.id = _Activatedroute.snapshot.paramMap.get('id')!;
-    console.log(this.id);
-    this.dish_service.getDishById(this.id);
-    this.reaction = this.review_service.getReactionById(this.id);
+    this.id = this.activeRoute.snapshot.paramMap.get('id')!;
+    // this.reaction = this.review_service.getReactionById(this.id);
 
-    this.dish_service.getDishById(this.id).ref.get().then(
-      doc => {
-        this.item = {id:doc.id, ...doc.data()} as DishTemplate;
-        this.refreshPicture();
-      }
-    ).catch(err => console.error(err));
-
-
-    this.dish_service.cartChanged$.subscribe((new_cart) => {
-      // this.count = this.dish_service.numberInCart(this.item.id);
-    });
-
-    this.review_service.reactionChanged$.subscribe((t) => {
-      this.reaction = this.review_service.getReactionById(this.id);
-    });
-
-    this.currency = this.dish_service.getCurrercy();
-    this.dish_service.currencyChanged$.subscribe((c) => (this.currency = c));
+    // this.review_service.reactionChanged$.subscribe((t) => {
+    //   this.reaction = this.review_service.getReactionById(this.id);
+    // });
   }
 
   ngOnInit(): void {
+    this.dish_service
+      .getDishById(this.id)
+      .ref.get()
+      .then((doc) => {
+        this.item = { id: doc.id, ...doc.data() } as DishTemplate;
+        this.itemLoaded();
+      })
+      .catch((err) => console.error(err));
+
+    console.log("id: " + this.id);
+    this.review_service
+      .getReactionsById(this.id)
+      .ref.get()
+      .then((doc) => {
+        console.log(doc.data());
+        this.reaction = {dishId: doc.id, ...doc.data()};
+        console.log(this.reaction);
+      })
+      .catch((err) => console.log(err));
+
+    this.dish_service.currencyChanged$.subscribe((c) => (this.currency = c));
+
+    this.currency = this.dish_service.getCurrercy();
+
+    this.dish_service.cartChanged$.subscribe((new_cart) => {
+      this.count = this.dish_service.numberInCart(this.item.id);
+    });
+  }
+
+  itemLoaded() {
+    this.image_path = this.item.pictures[this.currentPhoto];
     this.count = this.dish_service.numberInCart(this.item.id);
     let cache = this.review_service.getCache(this.id);
     if (cache == 1) {
@@ -70,10 +90,6 @@ export class DetailedViewComponent implements OnInit {
     } else if (cache == -1) {
       this.down_selected = true;
     }
-  }
-
-  refreshPicture(){
-    this.image_path = this.item.pictures[this.currentPhoto];
   }
 
   addToCart(): void {
@@ -124,13 +140,13 @@ export class DetailedViewComponent implements OnInit {
     }
   }
 
-  nextPhoto(){
+  nextPhoto() {
     this.currentPhoto += 1;
-    this.refreshPicture();
+    this.itemLoaded();
   }
 
-  prevPhoto(){
+  prevPhoto() {
     this.currentPhoto -= 1;
-    this.refreshPicture();
+    this.itemLoaded();
   }
 }

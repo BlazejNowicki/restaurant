@@ -2,6 +2,6 @@
 <div *ngFor="let review of this.reviews" class="review">
   <h3>{{ review.title }}</h3>
   <p>{{ review.body }}</p>
-  <div class="date">Wystawiono: {{ review.date | date: "d.M.Y" }}</div>
+  <div class="date" *ngIf="review.date">Wystawiono: {{ review.date | date: "d.M.Y" }}</div>
 </div>
 <div *ngIf="this.reviews.length == 0" class="noreviews">Ten produkt nie ma jeszcze żadnej opinii</div>

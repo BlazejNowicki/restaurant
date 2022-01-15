@@ -18,11 +18,10 @@ export class DishManagmentService {
   private dbPath = 'dishes';
   menuRef: AngularFirestoreCollection<any>;
 
-  menuIDs: Map<number, string> = new Map();
-
   private cart_changed = new Subject<Map<string, number>>();
-  private currency_changed = new Subject<Currency>();
   cartChanged$ = this.cart_changed.asObservable();
+
+  private currency_changed = new Subject<Currency>();
   currencyChanged$ = this.currency_changed.asObservable();
 
   constructor(
@@ -36,7 +35,7 @@ export class DishManagmentService {
     return this.menuRef;
   }
 
-  public getCart(): Map<string, number> {
+  public getCart() {
     return this.cart;
   }
 
@@ -65,81 +64,58 @@ export class DishManagmentService {
     cuisine: string,
     categories: string[],
     ingredients: string[],
-    max_per_day: number,
+    maximum_per_day: number,
     price: number,
     description: string,
     pictures: string[]
   ): void {
-    //   let id: string;
-    //   let id_ok = false;
-    //   do {
-    //     id_ok = true;
-    //     id = Math.floor(Math.random() * 1000);
-    //     for (let item of this.menu) {
-    //       if (id == item.id) {
-    //         id_ok = false;
-    //       }
-    //     }
-    //   } while (!id_ok);
-    //   const new_item = {
-    //     id: id,
-    //     name: name,
-    //     cuisine,
-    //     ingredients,
-    //     categories,
-    //     maximum_per_day: max_per_day,
-    //     price: price,
-    //     description,
-    //     pictures,
-    //   };
-    //   this.menu.push(new_item);
-    //   this.firestore
-    //     .collection('dishes')
-    //     .add(new_item)
-    //     .then(
-    //       (res) => {},
-    //       (err) => console.log(err)
-    //     );
-    //   this.menu_changed.next(this.menu);
+    const new_item = {
+      name: name,
+      cuisine,
+      ingredients,
+      categories,
+      maximum_per_day,
+      price: price,
+      description,
+      pictures,
+    };
+    this.firestore
+      .collection('dishes')
+      .add(new_item)
+      .then(
+        (res) => {},
+        (err) => console.log(err)
+      );
   }
 
   public removeFromMenu(id: string): void {
-    //   this.menu = this.menu.filter((e) => e.id != id);
-    //   this.cart.delete(id);
-    //   this.review_service.dishDeleted(id);
-    //   console.log(this.menuIDs);
-    //   console.log(id);
-    //   console.log(this.menuIDs.get(id));
-    //   this.firestore.collection('dishes').doc(this.menuIDs.get(id)).delete();
-
-    //   this.menu_changed.next(this.menu);
-    //   this.cart_changed.next(this.cart);
-    console.log('remove from menu');
+    this.firestore.collection('dishes').doc(id).delete();
+    this.cart.delete(id);
+    this.cart_changed.next(this.cart);
   }
 
   public addToCart(id: string): void {
-    // console.log('Add to cart ' + id);
-    // let current_number;
-    // if (this.cart.has(id)) {
-    //   current_number = this.cart.get(id);
-    // } else {
-    //   current_number = 0;
-    // }
-    // this.cart.set(id, current_number! + 1);
-    // this.cart_changed.next(this.cart);
+    console.log('Add to cart ' + id);
+    let current_number;
+    if (this.cart.has(id)) {
+      current_number = this.cart.get(id);
+    } else {
+      current_number = 0;
+    }
+    this.cart.set(id, current_number! + 1);
+    this.cart_changed.next(this.cart);
   }
 
   public removeFromCart(id: string): void {
-    // console.log('Remove from cart ' + id);
-    // if (this.cart.has(id)) {
-    //   let current_number = this.cart.get(id)!;
-    //   if (current_number > 1) {
-    //     this.cart.set(id, current_number - 1);
-    //   } else {
-    //     this.cart.delete(id);
-    //   }
-    // }
-    // this.menu_changed.next(this.menu);
-    // this.cart_changed.next(this.cart);
+    console.log('Remove from cart ' + id);
+    if (this.cart.has(id)) {
+      let current_number = this.cart.get(id)!;
+      if (current_number > 1) {
+        this.cart.set(id, current_number - 1);
+      } else {
+        this.cart.delete(id);
+      }
+    }
+    this.cart_changed.next(this.cart);
   }
 }

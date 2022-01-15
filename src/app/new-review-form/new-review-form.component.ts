@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, Validators, FormControl} from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { ReviewManagmentService } from '../review-managment.service';
+import { Review, ReviewManagmentService } from '../review-managment.service';
 
 @Component({
   selector: 'app-new-review-form',
@@ -47,13 +47,17 @@ export class NewReviewFormComponent implements OnInit {
   onSubmit(): void{
     console.log(this.reviewForm.value);
     let tmp = this.reviewForm.value;
-    this.reviewService.addReview({
+    console.log(tmp.date);
+    let new_review = {
       dishId: this.id,
       nick: tmp.nick,
       title: tmp.title,
       body: tmp.body,
-      date: tmp.date
-    })
+    } as Review;
+    if (tmp.date){
+      new_review.date = new Date(tmp.date);
+    }
+    this.reviewService.addReview(new_review)
     this.reviewForm.reset();
   }
 

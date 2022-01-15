@@ -1,6 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { DatePipe } from '@angular/common';
+import {
+  AngularFirestore,
+  AngularFirestoreCollection,
+} from '@angular/fire/compat/firestore';
+import { Timestamp } from 'firebase/firestore';
 
 export interface Reaction {
   dishId: string;
@@ -20,19 +25,13 @@ export interface Review {
   providedIn: 'root',
 })
 export class ReviewManagmentService {
-  likes: Reaction[] = [
-    { dishId: '1', likes: 10, dislikes: 2 },
-    { dishId: '2', likes: 15, dislikes: 4 },
-  ];
-  reviews: Review[] = [
-    {
-      dishId: '1',
-      nick: "Niewybrednysmakosz69",
-      title: "Moja ulubiona",
-      body: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni corporis molestias delectus asperiores ullam rerum veniam! Repellendus esse harum modi ipsam, doloremque atque ipsa cumque minima facere officiis aut delectus rerum illo ad repudiandae voluptatem quo, tempore, itaque nisi omnis accusamus quod debitis magni sapiente. Quisquam reiciendis velit, illo suscipit sunt necessitatibus id? Aliquam hic voluptate quaerat maxime repellat omnis",
-      date: new Date(2021, 12, 24)
-    }
-  ];
+  dbReactionPath = 'reactions';
+  dbReviewPath = 'reviews';
+  reactionRef: AngularFirestoreCollection<any>;
+  reviewRef: AngularFirestoreCollection<any>;
+  likes: Reaction[] = [];
+  reviews: Review[] = [];
+
   cache: Map<string, number> = new Map();
   private reaction_changed = new Subject<Reaction[]>();
   private review_added = new Subject<Review[]>();
@@ -55,9 +54,9 @@ export class ReviewManagmentService {
     return 0;
   }
 
-  getReviewsById(id: string): Review[] {
-    return this.reviews.filter((i) => i.dishId == id);
-  }
+  // getReviewsById(id: string): Review[] {
+  //   return this.reviews.filter((i) => i.dishId == id);
+  // }
 
   getReactionById(id: string): Reaction {
     let ans: Array<Reaction> = this.likes.filter((i) => i.dishId == id);
@@ -73,8 +72,25 @@ export class ReviewManagmentService {
   }
 
   addReview(review: Review): void {
-    this.reviews.push(review);
-    this.review_added.next(this.reviews);
+    // this.reviews.push(review);
+    // this.review_added.next(this.reviews);
+    if (review.date) {
+      console.log("date is ok");
+      this.reviewRef
+        .add({ ...review, date: Timestamp.fromDate(review.date!) })
+        .then(
+          (res) => {},
+          (err) => console.log(err)
+        );
+    } else {
+      console.log("date is not ok");
+      this.reviewRef
+        .add({ ...review})
+        .then(
+          (res) => {},
+          (err) => console.log(err)
+        );
+    }
   }
 
   addLike(id: string) {
@@ -134,5 +150,26 @@ export class ReviewManagmentService {
     this.reaction_changed.next(this.likes);
   }
 
-  constructor() {}
+  constructor(private firestore: AngularFirestore) {
+    this.reactionRef = this.firestore.collection(this.dbReactionPath);
+    this.reviewRef = this.firestore.collection(this.dbReviewPath);
+  }
+
+  getReactionsById(id: string) {
+    return this.reactionRef.doc(id);
+  }
+
+  getReactions() {
+    return this.reactionRef;
+  }
+
+  getReviews() {
+    return this.reviewRef;
+  }
+
+  updateReaction(reaction: Reaction) {
+    this.reactionRef
+      .doc(reaction.dishId)
+      .update({ likes: reaction.likes, dislikes: reaction.dislikes });
+  }
 }
