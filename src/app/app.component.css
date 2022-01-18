@@ -22,14 +22,14 @@ h1 {
   margin: 0px auto 0px auto;
 }
 
-a {
+nav > *{
   display: block;
   text-decoration: none;
   padding: 10px;
   color: black;
 }
 
-a:hover {
+nav > *:hover {
   background-color: rgba(0, 0, 0, 0.171);
 }
 

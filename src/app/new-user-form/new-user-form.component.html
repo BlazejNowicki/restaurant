@@ -1,0 +1,18 @@
+<div>
+  <h3>{{ title }}</h3>
+  <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+    <div>
+      <label for="email">Email</label>
+      <input type="text" id="email" formControlName="email" required />
+      <div *ngIf="email?.hasError('required') && !email?.untouched">To pole jest wymagane.</div>
+      <div *ngIf="email?.hasError('email') && !email?.untouched">Wprowadź poprawny adres email.</div>
+    </div>
+    <div>
+      <label for="password">Password</label>
+      <input type="password" id="password" formControlName="password" required />
+      <div *ngIf="password?.hasError('required') && !password?.untouched">To pole jest wymagane.</div>
+    </div>
+
+    <button [disabled]="!userForm.valid" type="submit" id="submit">Submit</button>
+  </form>
+</div>

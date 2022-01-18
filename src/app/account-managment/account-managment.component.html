@@ -1,0 +1,8 @@
+<div class="container">
+  <div id="left">
+    <app-new-user-form title="Utwórz konto" (formData)="addUser($event)"> </app-new-user-form>
+  </div>
+  <div class="right">
+    <app-new-user-form title="Zaloguj się" (formData)="logUser($event)"> </app-new-user-form>
+  </div>
+</div>

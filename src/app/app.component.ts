@@ -1,9 +1,11 @@
-import { Component, Input, OnDestroy } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Auth } from '@angular/fire/auth';
 import {
   Router,
   NavigationStart,
   Event as NavigationEvent,
 } from '@angular/router';
+import { AuthService, AuthState } from './auth.service';
 import { DishManagmentService } from './dish-managment.service';
 import { MockDataService } from './mock-data.service';
 
@@ -29,20 +31,23 @@ export enum Currency {
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
-export class AppComponent implements OnDestroy {
+export class AppComponent implements OnInit, OnDestroy {
   title = 'restaurant';
   currency = Currency.Dolar;
   dishes: DishTemplate[] = [];
   currentUrl: String;
   event$;
+  userState;
 
   constructor(
     private dish_service: DishManagmentService,
     private mock_data: MockDataService,
-    private router: Router
+    private router: Router,
+    private auth: AuthService
   ) {
-    // this.dishes = mock_data.getMockData();hj
     this.currentUrl = this.router.url;
+
+    this.userState = this.auth.getState();
 
     this.event$ = this.router.events.subscribe((event: NavigationEvent) => {
       if (event instanceof NavigationStart) {
@@ -51,6 +56,11 @@ export class AppComponent implements OnDestroy {
       }
     });
   }
+
+  ngOnInit(): void {
+    this.auth.userChanged$.subscribe((s) => (this.userState = s));
+  }
+
   ngOnDestroy(): void {
     this.event$.unsubscribe();
   }
@@ -61,5 +71,16 @@ export class AppComponent implements OnDestroy {
 
   dolarSelected() {
     this.dish_service.setCurrency(Currency.Dolar);
+  }
+
+  get authState(): typeof AuthState {
+    return AuthState;
+  }
+
+  logOut() {
+    this.auth
+      .logout()
+      .then(() => this.auth.stateChanged())
+      .catch((err) => console.log(err));
   }
 }

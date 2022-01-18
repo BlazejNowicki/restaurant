@@ -2,9 +2,23 @@
 <nav>
   <a [routerLink]="['home']">Strona główna</a>
   <a [routerLink]="['menu']">Menu</a>
-  <a [routerLink]="['new-dish']">Nowe danie</a>
-  <a [routerLink]="['cart']">Koszyk</a>
+  <a
+    [routerLink]="['new-dish']"
+    *ngIf="userState == authState.Manager || userState == authState.Admin"
+    >Nowe danie</a
+  >
+  <a [routerLink]="['cart']" *ngIf="userState != authState.Stranger">Koszyk</a>
+  <a [routerLink]="['account']" *ngIf="userState == authState.Stranger"
+    >Logowanie/Rejestracja</a
+  >
+  <a [routerLink]="['admin-view']" *ngIf="userState == authState.Admin"
+    >Admin-view</a
+  >
+  <div *ngIf="userState != authState.Stranger" (click)="logOut()">
+    Wyloguj się
+  </div>
 </nav>
+<div>userState: {{ userState }}</div>
 <div class="container">
   <!-- <app-cart [dishes]="dishes"></app-cart> -->
   <div *ngIf="this.currentUrl != '/home'" class="currency">

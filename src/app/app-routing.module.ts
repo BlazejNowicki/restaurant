@@ -7,6 +7,8 @@ import { DishesComponent } from './dishes/dishes.component';
 import { NewDishFormComponent } from './new-dish-form/new-dish-form.component';
 import { DetailedViewComponent } from './detailed-view/detailed-view.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { AccountManagmentComponent } from './account-managment/account-managment.component';
+import { AdminViewComponent } from './admin-view/admin-view.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -15,6 +17,8 @@ const routes: Routes = [
   { path: 'menu', component: DishesComponent },
   { path: 'menu/:id', component: DetailedViewComponent },
   { path: 'new-dish', component: NewDishFormComponent },
+  { path: 'account', component: AccountManagmentComponent },
+  { path: 'admin-view', component: AdminViewComponent },
   { path: '**', component: PageNotFoundComponent}
 ];
 

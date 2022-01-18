@@ -20,6 +20,10 @@ import { environment } from '../environments/environment';
 import { provideFirestore,getFirestore } from '@angular/fire/firestore';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+import { provideAuth,getAuth } from '@angular/fire/auth';
+import { AccountManagmentComponent } from './account-managment/account-managment.component';
+import { NewUserFormComponent } from './new-user-form/new-user-form.component';
+import { AdminViewComponent } from './admin-view/admin-view.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +36,10 @@ import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
     DetailedViewComponent,
     NewReviewFormComponent,
     ReviewsComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    AccountManagmentComponent,
+    NewUserFormComponent,
+    AdminViewComponent
   ],
   imports: [
     BrowserModule,
@@ -43,6 +50,7 @@ import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
     AngularFireModule.initializeApp(environment.firebase),
     provideFirestore(() => getFirestore()),
     AngularFirestoreModule,
+    provideAuth(() => getAuth()),
   ],
   providers: [],
   bootstrap: [AppComponent]
