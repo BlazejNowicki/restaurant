@@ -1,15 +1,15 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { AfterContentInit, Component, Input, OnInit } from '@angular/core';
 import { Currency, DishTemplate } from '../app.component';
 import { DishManagmentService } from '../dish-managment.service';
-import { faThumbsUp, faThumbsDown } from '@fortawesome/free-solid-svg-icons';
+import { AuthService, AuthState } from '../auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-item',
   templateUrl: './item.component.html',
   styleUrls: ['./item.component.css'],
 })
-export class ItemComponent implements OnInit {
-
+export class ItemComponent implements OnInit, AfterContentInit{
   @Input() item: DishTemplate = {
     id: '0',
     name: 'none',
@@ -22,15 +22,23 @@ export class ItemComponent implements OnInit {
   @Input() cheap = 0;
   currency: Currency;
   count: number = 0;
-  missing_picture_path = "/assets/images/missing.jpeg";
+  missing_picture_path = '/assets/images/missing.jpeg';
+  user: AuthState =AuthState.Stranger;
 
-  constructor(private dish_service: DishManagmentService) {
+  constructor(
+    private dish_service: DishManagmentService,
+    private auth: AuthService,
+    private router: Router
+  ) {
     this.dish_service.cartChanged$.subscribe((new_cart) => {
       this.count = this.dish_service.numberInCart(this.item.id);
     });
 
     this.currency = this.dish_service.getCurrercy();
-    this.dish_service.currencyChanged$.subscribe(c => this.currency = c);
+    this.dish_service.currencyChanged$.subscribe((c) => (this.currency = c));
+
+    this.auth.userChanged$.subscribe(s => this.user = s);
+    this.user = this.auth.getState();
   }
 
   ngOnInit(): void {
@@ -47,5 +55,16 @@ export class ItemComponent implements OnInit {
 
   removeFromMenu(): void {
     this.dish_service.removeFromMenu(this.item.id);
+  }
+
+  showDetails() {
+      console.log(this.user);
+    if (this.user != AuthState.Stranger) {
+      this.router.navigate([`/menu/${this.item.id}`]);
+    }
+  }
+
+  ngAfterContentInit(): void {
+    this.user = this.auth.getState();
   }
 }

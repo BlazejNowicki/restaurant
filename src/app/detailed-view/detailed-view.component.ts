@@ -12,7 +12,7 @@ import { Reaction, ReviewManagmentService } from '../review-managment.service';
   templateUrl: './detailed-view.component.html',
   styleUrls: ['./detailed-view.component.css'],
 })
-export class DetailedViewComponent implements OnInit{
+export class DetailedViewComponent implements OnInit {
   id: string;
   item: DishTemplate = {
     id: '1234',
@@ -31,11 +31,7 @@ export class DetailedViewComponent implements OnInit{
   down_selected: boolean = false;
   currency: Currency = Currency.Dolar;
   count: number = 0;
-  reaction: Reaction = {
-    dishId: '213423',
-    likes: 10,
-    dislikes: 3,
-  };
+  reaction: Reaction | null = null;
   currentPhoto: number = 0;
 
   constructor(
@@ -56,13 +52,13 @@ export class DetailedViewComponent implements OnInit{
       })
       .catch((err) => console.error(err));
 
-    console.log("id: " + this.id);
+    console.log('id: ' + this.id);
     this.review_service
       .getReactionsById(this.id)
       .ref.get()
       .then((doc) => {
         console.log(doc.data());
-        this.reaction = {dishId: doc.id, ...doc.data()};
+        this.reaction = { dishId: doc.id, ...doc.data() };
         console.log(this.reaction);
       })
       .catch((err) => console.log(err));

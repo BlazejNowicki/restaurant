@@ -37,17 +37,14 @@ export class AppComponent implements OnInit, OnDestroy {
   dishes: DishTemplate[] = [];
   currentUrl: String;
   event$;
-  userState;
+  userState = AuthState.Stranger;
 
   constructor(
     private dish_service: DishManagmentService,
-    private mock_data: MockDataService,
     private router: Router,
     private auth: AuthService
   ) {
     this.currentUrl = this.router.url;
-
-    this.userState = this.auth.getState();
 
     this.event$ = this.router.events.subscribe((event: NavigationEvent) => {
       if (event instanceof NavigationStart) {
@@ -58,6 +55,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    console.log("in component constuctor");
     this.auth.userChanged$.subscribe((s) => (this.userState = s));
   }
 
@@ -80,7 +78,10 @@ export class AppComponent implements OnInit, OnDestroy {
   logOut() {
     this.auth
       .logout()
-      .then(() => this.auth.stateChanged())
+      .then(() => {
+        this.auth.stateChanged();
+        this.router.navigate(['home']);
+      })
       .catch((err) => console.log(err));
   }
 }

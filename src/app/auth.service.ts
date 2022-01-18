@@ -23,6 +23,8 @@ export class AuthService implements OnInit {
   private user_changed = new Subject<AuthState>();
   userChanged$ = this.user_changed.asObservable();
 
+  userState: AuthState = AuthState.Stranger;
+
   constructor(private auth: Auth, private fierstore: AngularFirestore) {}
 
   ngOnInit(): void {}
@@ -41,6 +43,7 @@ export class AuthService implements OnInit {
 
   stateChanged() {
     if (this.auth.currentUser == null) {
+      this.userState = AuthState.Stranger;
       this.user_changed.next(AuthState.Stranger);
     } else if (this.auth.currentUser != null) {
       this.fierstore
@@ -51,18 +54,21 @@ export class AuthService implements OnInit {
           next: (v) => {
             let data = v.data() as { role: string } | undefined;
             if (data) {
-              console.log(data.role)
+              console.log(data.role);
               switch (data.role) {
                 case 'manager':
+                  this.userState = AuthState.Stranger;
                   this.user_changed.next(AuthState.Manager);
                   break;
                 case 'admin':
+                  this.userState = AuthState.Manager;
                   this.user_changed.next(AuthState.Admin);
                   break;
                 default:
                   console.error('Unknown role: ' + data);
               }
             } else {
+              this.userState = AuthState.User;
               this.user_changed.next(AuthState.User);
             }
           },
@@ -72,11 +78,7 @@ export class AuthService implements OnInit {
     }
   }
 
-  getState() {
-    if (this.auth.currentUser == null) {
-      return AuthState.Stranger;
-    } else {
-      return AuthState.User;
-    }
+  getState(){
+    return this.userState;
   }
 }

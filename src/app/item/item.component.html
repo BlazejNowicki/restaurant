@@ -6,9 +6,11 @@
   ]"
 >
   <div class="picture-box">
-    <a [routerLink]="['/menu', this.item.id]">
-      <img [src]="item.pictures[0]" alt="Missing picture" />
-    </a>
+    <img
+      [src]="item.pictures[0]"
+      alt="Missing picture"
+      (click)="showDetails()"
+    />
   </div>
   <div>
     <div>{{ item.name | uppercase }}</div>

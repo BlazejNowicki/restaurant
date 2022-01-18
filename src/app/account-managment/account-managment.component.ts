@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from '@angular/fire/auth';
+import { Router } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
 import { AuthService, LoginData } from '../auth.service';
 
@@ -9,7 +10,7 @@ import { AuthService, LoginData } from '../auth.service';
   styleUrls: ['./account-managment.component.css'],
 })
 export class AccountManagmentComponent implements OnInit {
-  constructor(private auth: AuthService) {}
+  constructor(private auth: AuthService, private router: Router) {}
 
   ngOnInit(): void {
     this.auth.userChanged$.subscribe((state) =>
@@ -24,6 +25,7 @@ export class AccountManagmentComponent implements OnInit {
       .then((r) => {
         console.log(r);
         this.auth.stateChanged();
+        this.router.navigate(['home']);
       })
       .catch((err) => console.log(err));
   }
@@ -34,6 +36,7 @@ export class AccountManagmentComponent implements OnInit {
       .then((r) => {
         console.log(r);
         this.auth.stateChanged();
+        this.router.navigate(['home']);
       })
       .catch((err) => console.log('Błąd'));
   }

@@ -32,13 +32,13 @@
           (click)="upPressed()"
           [ngClass]="{ selected: this.up_selected }"
         ></fa-icon>
-        {{ reaction.likes }}
+        {{ reaction?.likes }}
         <fa-icon
           [icon]="down"
           (click)="downPressed()"
           [ngClass]="{ selected: this.down_selected }"
         ></fa-icon>
-        {{ reaction.dislikes }}
+        {{ reaction?.dislikes }}
       </div>
       <div class="buttons">
         <button
