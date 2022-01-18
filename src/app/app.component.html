@@ -3,7 +3,7 @@
   <a [routerLink]="['home']">Strona główna</a>
   <a [routerLink]="['menu']">Menu</a>
   <a
-    [routerLink]="['new-dish']"
+    [routerLink]="['dishes-manager']"
     *ngIf="userState == authState.Manager || userState == authState.Admin"
     >Nowe danie</a
   >

@@ -24,6 +24,8 @@ import { provideAuth,getAuth } from '@angular/fire/auth';
 import { AccountManagmentComponent } from './account-managment/account-managment.component';
 import { NewUserFormComponent } from './new-user-form/new-user-form.component';
 import { AdminViewComponent } from './admin-view/admin-view.component';
+import { MenuEditorComponent } from './menu-editor/menu-editor.component';
+import { ItemEditComponent } from './item-edit/item-edit.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +41,9 @@ import { AdminViewComponent } from './admin-view/admin-view.component';
     PageNotFoundComponent,
     AccountManagmentComponent,
     NewUserFormComponent,
-    AdminViewComponent
+    AdminViewComponent,
+    MenuEditorComponent,
+    ItemEditComponent
   ],
   imports: [
     BrowserModule,

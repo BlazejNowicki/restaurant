@@ -53,9 +53,9 @@ export class ItemComponent implements OnInit, AfterContentInit{
     this.dish_service.removeFromCart(this.item.id);
   }
 
-  removeFromMenu(): void {
-    this.dish_service.removeFromMenu(this.item.id);
-  }
+  // removeFromMenu(): void {
+  //   this.dish_service.removeFromMenu(this.item.id);
+  // }
 
   showDetails() {
       console.log(this.user);

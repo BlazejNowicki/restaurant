@@ -1,0 +1,13 @@
+<div class="container">
+  <div class="details">
+    <h3>Nazwa: {{ item.name }}</h3>
+    <div>Kategorie: {{ item.categories }}</div>
+    <div>Składniki: {{ item.ingredients }}</div>
+    <div>Opis: {{ item.description }}</div>
+    <div>Cena($): {{ item.price }}</div>
+  </div>
+  <div class="buttons">
+    <button (click)="delete()">USUŃ</button>
+    <button>EDYTUJ</button>
+  </div>
+</div>

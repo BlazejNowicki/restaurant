@@ -9,6 +9,7 @@ import { DetailedViewComponent } from './detailed-view/detailed-view.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { AccountManagmentComponent } from './account-managment/account-managment.component';
 import { AdminViewComponent } from './admin-view/admin-view.component';
+import { MenuEditorComponent } from './menu-editor/menu-editor.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -16,7 +17,7 @@ const routes: Routes = [
   { path: 'cart', component: CartComponent },
   { path: 'menu', component: DishesComponent },
   { path: 'menu/:id', component: DetailedViewComponent },
-  { path: 'new-dish', component: NewDishFormComponent },
+  { path: 'dishes-manager', component: MenuEditorComponent },
   { path: 'account', component: AccountManagmentComponent },
   { path: 'admin-view', component: AdminViewComponent },
   { path: '**', component: PageNotFoundComponent}
