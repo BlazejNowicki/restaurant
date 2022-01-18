@@ -17,7 +17,6 @@ export class ItemEditComponent implements OnInit {
     pictures: [],
   };
 
-  @Output() edit_item: EventEmitter<DishTemplate> = new EventEmitter();
   constructor(private dish_managment: DishManagmentService) { }
 
   ngOnInit(): void {
@@ -28,7 +27,7 @@ export class ItemEditComponent implements OnInit {
   }
 
   edit(){
-    this.edit_item.emit(this.item);
+    this.dish_managment.dataToEdit(this.item);
     this.dish_managment.removeFromMenu(this.item.id);
   }
 }

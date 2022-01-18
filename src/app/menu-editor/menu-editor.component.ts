@@ -11,6 +11,7 @@ import { DishManagmentService } from '../dish-managment.service';
 export class MenuEditorComponent implements OnInit, OnDestroy {
   menuSubscription: Subscription | null = null;
   dishes: DishTemplate[] = [];
+  edit_data: DishTemplate | null = null;
 
   constructor(private dish_managment: DishManagmentService) { }
 
@@ -41,5 +42,8 @@ export class MenuEditorComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
       this.menuSubscription?.unsubscribe();
+  }
+
+  editItem(data: DishTemplate){
   }
 }

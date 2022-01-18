@@ -24,6 +24,9 @@ export class DishManagmentService {
   private currency_changed = new Subject<Currency>();
   currencyChanged$ = this.currency_changed.asObservable();
 
+  private data_to_edit =new Subject<DishTemplate>();
+  dataChenged$ = this.data_to_edit.asObservable();
+
   constructor(
     private review_service: ReviewManagmentService,
     private firestore: AngularFirestore
@@ -70,14 +73,14 @@ export class DishManagmentService {
     pictures: string[]
   ): void {
     const new_item = {
-      name: name,
-      cuisine,
-      ingredients,
-      categories,
+      name: (name?name:''),
+      cuisine: (cuisine?cuisine:''),
+      ingredients: (ingredients?ingredients:[]),
+      categories: (categories?categories:[]),
       maximum_per_day,
       price: price,
-      description,
-      pictures,
+      description: (description?description:""),
+      pictures: (pictures?pictures:[]),
     };
     this.firestore
       .collection('dishes')
@@ -117,5 +120,9 @@ export class DishManagmentService {
       }
     }
     this.cart_changed.next(this.cart);
+  }
+
+  public dataToEdit(item: DishTemplate){
+    this.data_to_edit.next(item);
   }
 }
