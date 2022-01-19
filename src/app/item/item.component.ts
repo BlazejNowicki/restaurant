@@ -37,8 +37,8 @@ export class ItemComponent implements OnInit, AfterContentInit{
     this.currency = this.dish_service.getCurrercy();
     this.dish_service.currencyChanged$.subscribe((c) => (this.currency = c));
 
-    this.auth.userChanged$.subscribe(s => this.user = s);
-    this.user = this.auth.getState();
+    this.auth.userChanged$.subscribe(s => this.user = s.role);
+    this.user = this.auth.getInfo().role;
   }
 
   ngOnInit(): void {
@@ -65,6 +65,6 @@ export class ItemComponent implements OnInit, AfterContentInit{
   }
 
   ngAfterContentInit(): void {
-    this.user = this.auth.getState();
+    this.user = this.auth.getInfo().role;
   }
 }

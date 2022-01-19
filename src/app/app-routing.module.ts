@@ -10,16 +10,17 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { AccountManagmentComponent } from './account-managment/account-managment.component';
 import { AdminViewComponent } from './admin-view/admin-view.component';
 import { MenuEditorComponent } from './menu-editor/menu-editor.component';
+import { AuthGuard } from './auth.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
-  { path: 'home', component: HomeComponent },
-  { path: 'cart', component: CartComponent },
+  { path: 'home', component: HomeComponent},
+  { path: 'cart', component: CartComponent, canActivate:[AuthGuard]},
   { path: 'menu', component: DishesComponent },
-  { path: 'menu/:id', component: DetailedViewComponent },
-  { path: 'dishes-manager', component: MenuEditorComponent },
-  { path: 'account', component: AccountManagmentComponent },
-  { path: 'admin-view', component: AdminViewComponent },
+  { path: 'menu/:id', component: DetailedViewComponent, canActivate:[AuthGuard] },
+  { path: 'dishes-manager', component: MenuEditorComponent, canActivate:[AuthGuard] },
+  { path: 'account', component: AccountManagmentComponent},
+  { path: 'admin-view', component: AdminViewComponent, canActivate:[AuthGuard] },
   { path: '**', component: PageNotFoundComponent}
 ];
 

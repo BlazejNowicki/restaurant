@@ -5,7 +5,7 @@ import { DishManagmentService } from '../dish-managment.service';
 @Component({
   selector: 'app-item-edit',
   templateUrl: './item-edit.component.html',
-  styleUrls: ['./item-edit.component.css']
+  styleUrls: ['./item-edit.component.css'],
 })
 export class ItemEditComponent implements OnInit {
   @Input() item: DishTemplate = {
@@ -17,17 +17,20 @@ export class ItemEditComponent implements OnInit {
     pictures: [],
   };
 
-  constructor(private dish_managment: DishManagmentService) { }
+  constructor(private dish_managment: DishManagmentService) {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
-  delete(){
+  delete() {
     this.dish_managment.removeFromMenu(this.item.id);
   }
 
-  edit(){
+  edit() {
     this.dish_managment.dataToEdit(this.item);
+    window.scroll({
+      top: 0,
+      behavior: 'smooth',
+    });
     this.dish_managment.removeFromMenu(this.item.id);
   }
 }

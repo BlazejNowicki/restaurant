@@ -5,9 +5,8 @@ import {
   NavigationStart,
   Event as NavigationEvent,
 } from '@angular/router';
-import { AuthService, AuthState } from './auth.service';
+import { AuthService, AuthState, UserInfo } from './auth.service';
 import { DishManagmentService } from './dish-managment.service';
-import { MockDataService } from './mock-data.service';
 
 export interface DishTemplate {
   id: string;
@@ -38,6 +37,10 @@ export class AppComponent implements OnInit, OnDestroy {
   currentUrl: String;
   event$;
   userState = AuthState.Stranger;
+  info: UserInfo = {
+    email: null,
+    role: AuthState.Stranger
+  }
 
   constructor(
     private dish_service: DishManagmentService,
@@ -55,8 +58,10 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    console.log("in component constuctor");
-    this.auth.userChanged$.subscribe((s) => (this.userState = s));
+    this.auth.userChanged$.subscribe((s) => {
+      this.info = s;
+      this.userState = s.role!
+    });
   }
 
   ngOnDestroy(): void {

@@ -5,23 +5,22 @@
   <a
     [routerLink]="['dishes-manager']"
     *ngIf="userState == authState.Manager || userState == authState.Admin"
-    >Nowe danie</a
+    >Zarządzanie menu</a
   >
   <a [routerLink]="['cart']" *ngIf="userState != authState.Stranger">Koszyk</a>
   <a [routerLink]="['account']" *ngIf="userState == authState.Stranger"
     >Logowanie/Rejestracja</a
   >
   <a [routerLink]="['admin-view']" *ngIf="userState == authState.Admin"
-    >Admin-view</a
+    >Panel Administracyjny</a
   >
   <div *ngIf="userState != authState.Stranger" (click)="logOut()">
+    ({{info.role | lowercase}}: {{info.email}})
     Wyloguj się
   </div>
 </nav>
-<div>userState: {{ userState }}</div>
 <div class="container">
-  <!-- <app-cart [dishes]="dishes"></app-cart> -->
-  <div *ngIf="this.currentUrl != '/home'" class="currency">
+  <div *ngIf="this.currentUrl.includes('menu')" class="currency">
     <div>Waluta:</div>
     <input
       type="radio"
