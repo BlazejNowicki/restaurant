@@ -39,7 +39,8 @@ export class AppComponent implements OnInit, OnDestroy {
   userState = AuthState.Stranger;
   info: UserInfo = {
     email: null,
-    role: AuthState.Stranger
+    role: AuthState.Stranger,
+    canComment: false
   }
 
   constructor(
@@ -60,7 +61,8 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.auth.userChanged$.subscribe((s) => {
       this.info = s;
-      this.userState = s.role!
+      this.userState = s.role!;
+      console.log(s);
     });
   }
 

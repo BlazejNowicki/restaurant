@@ -1,5 +1,10 @@
 import { Injectable, OnInit } from '@angular/core';
-import { Auth, signInWithEmailAndPassword, User, setPersistence } from '@angular/fire/auth';
+import {
+  Auth,
+  signInWithEmailAndPassword,
+  User,
+  setPersistence,
+} from '@angular/fire/auth';
 import { createUserWithEmailAndPassword, signOut } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Subject } from 'rxjs';
@@ -19,6 +24,7 @@ export enum AuthState {
 export interface UserInfo {
   email: string | null;
   role: AuthState;
+  canComment: boolean;
 }
 
 @Injectable({
@@ -31,12 +37,12 @@ export class AuthService implements OnInit {
   userInfo: UserInfo = {
     email: null,
     role: AuthState.Stranger,
+    canComment: false,
   };
 
   constructor(private auth: Auth, private fierstore: AngularFirestore) {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   login({ email, password }: LoginData) {
     return signInWithEmailAndPassword(this.auth, email, password);
@@ -50,12 +56,37 @@ export class AuthService implements OnInit {
     return signOut(this.auth);
   }
 
+  canComment() {
+    if (this.auth.currentUser != null) {
+      this.fierstore
+        .collection('banned_users')
+        .doc(this.auth.currentUser?.uid)
+        .get()
+        .subscribe({
+          next: (v) => {
+            let data = v.data() as { banned: boolean } | undefined;
+            if (data) {
+              if (data.banned) {
+                this.userInfo.canComment = false;
+              }
+            }
+            this.user_changed.next({ ...this.userInfo });
+          },
+          error: (e) => console.error(e),
+          complete: () => console.info('complete'),
+        });
+    } else {
+      this.user_changed.next({ ...this.userInfo });
+    }
+  }
+
   stateChanged() {
     if (this.auth.currentUser == null) {
       this.userInfo = {
         email: null,
-        role: AuthState.Stranger
-      }
+        role: AuthState.Stranger,
+        canComment: false,
+      };
       this.user_changed.next(this.userInfo);
     } else if (this.auth.currentUser != null) {
       this.fierstore
@@ -65,6 +96,7 @@ export class AuthService implements OnInit {
         .subscribe({
           next: (v) => {
             this.userInfo.email = this.auth.currentUser!.email;
+            this.userInfo.canComment = false;
 
             let data = v.data() as { role: string } | undefined;
             if (data) {
@@ -72,18 +104,19 @@ export class AuthService implements OnInit {
               switch (data.role) {
                 case 'manager':
                   this.userInfo.role = AuthState.Manager;
-                  this.user_changed.next({...this.userInfo});
+                  this.user_changed.next({ ...this.userInfo });
                   break;
                 case 'admin':
                   this.userInfo.role = AuthState.Admin;
-                  this.user_changed.next({...this.userInfo});
+                  this.user_changed.next({ ...this.userInfo });
                   break;
                 default:
                   console.error('Unknown role: ' + data);
               }
             } else {
               this.userInfo.role = AuthState.User;
-              this.user_changed.next({...this.userInfo});
+              this.userInfo.canComment = true;
+              this.canComment();
             }
           },
           error: (e) => console.error(e),
@@ -92,8 +125,7 @@ export class AuthService implements OnInit {
     }
   }
 
-
-  getInfo(){
-    return this.userInfo;
+  getInfo() {
+    return { ...this.userInfo };
   }
 }

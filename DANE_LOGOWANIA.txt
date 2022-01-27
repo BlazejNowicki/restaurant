@@ -1,0 +1,16 @@
+Email
+Hasło
+
+user1@gmail.com
+user1user1
+
+user2@gmail.com
+user2user2
+
+manager@gmail.com
+managermanager
+
+admin@gmail.com
+adminadmin
+
+Aktualne zasady dostępu do bazy danych w pliku firestore.rules

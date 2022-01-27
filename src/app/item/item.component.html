@@ -16,11 +16,13 @@
     <div>{{ item.name | uppercase }}</div>
     <div>{{ item.cuisine | lowercase }}</div>
   </div>
+  <div *ngIf="user == authState.Stranger"></div>
+  <div *ngIf="user == authState.Stranger"></div>
   <div *ngIf="currency == 'dolar'">Cena: {{ item.price | currency }}</div>
   <div *ngIf="currency == 'euro'">
     Cena: {{ item.price * 0.89 | currency: "EUR" }}
   </div>
-  <div class="buttons">
+  <div class="buttons" *ngIf="user != authState.Stranger">
     <button
       (click)="addToCart()"
       [style.visibility]="count != item.maximum_per_day ? 'visible' : 'hidden'"
@@ -38,7 +40,7 @@
   <div [hidden]="item.maximum_per_day != 0">Produkt chwilowo niedostępny</div>
   <div
     class="counter"
-    [hidden]="item.maximum_per_day == 0"
+    [hidden]="item.maximum_per_day == 0 || this.user == authState.Stranger"
     [ngClass]="{
       'orange-border': item.maximum_per_day! - count! < 3,
       'red-border': item.maximum_per_day == count && count != 0

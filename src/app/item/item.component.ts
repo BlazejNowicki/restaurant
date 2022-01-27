@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
   templateUrl: './item.component.html',
   styleUrls: ['./item.component.css'],
 })
-export class ItemComponent implements OnInit, AfterContentInit{
+export class ItemComponent implements OnInit, AfterContentInit {
   @Input() item: DishTemplate = {
     id: '0',
     name: 'none',
@@ -23,7 +23,7 @@ export class ItemComponent implements OnInit, AfterContentInit{
   currency: Currency;
   count: number = 0;
   missing_picture_path = '/assets/images/missing.jpeg';
-  user: AuthState =AuthState.Stranger;
+  user: AuthState = AuthState.Stranger;
 
   constructor(
     private dish_service: DishManagmentService,
@@ -37,7 +37,7 @@ export class ItemComponent implements OnInit, AfterContentInit{
     this.currency = this.dish_service.getCurrercy();
     this.dish_service.currencyChanged$.subscribe((c) => (this.currency = c));
 
-    this.auth.userChanged$.subscribe(s => this.user = s.role);
+    this.auth.userChanged$.subscribe((s) => (this.user = s.role));
     this.user = this.auth.getInfo().role;
   }
 
@@ -53,12 +53,8 @@ export class ItemComponent implements OnInit, AfterContentInit{
     this.dish_service.removeFromCart(this.item.id);
   }
 
-  // removeFromMenu(): void {
-  //   this.dish_service.removeFromMenu(this.item.id);
-  // }
-
   showDetails() {
-      console.log(this.user);
+    console.log(this.user);
     if (this.user != AuthState.Stranger) {
       this.router.navigate([`/menu/${this.item.id}`]);
     }
@@ -66,5 +62,9 @@ export class ItemComponent implements OnInit, AfterContentInit{
 
   ngAfterContentInit(): void {
     this.user = this.auth.getInfo().role;
+  }
+
+  get authState(): typeof AuthState {
+    return AuthState;
   }
 }

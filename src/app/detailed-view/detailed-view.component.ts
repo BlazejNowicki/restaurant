@@ -1,9 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { docSnapshots } from '@angular/fire/firestore';
 import { ActivatedRoute } from '@angular/router';
-import { faThumbsDown, faThumbsUp } from '@fortawesome/free-solid-svg-icons';
+import { faLessThanEqual, faThumbsDown, faThumbsUp } from '@fortawesome/free-solid-svg-icons';
 import { map, Subscription } from 'rxjs';
 import { Currency, DishTemplate } from '../app.component';
+import { AuthService } from '../auth.service';
 import { DishManagmentService } from '../dish-managment.service';
 import { Reaction, ReviewManagmentService } from '../review-managment.service';
 
@@ -33,11 +34,13 @@ export class DetailedViewComponent implements OnInit {
   count: number = 0;
   reaction: Reaction | null = null;
   currentPhoto: number = 0;
+  canComment: boolean = false;
 
   constructor(
     private activeRoute: ActivatedRoute,
     private dish_service: DishManagmentService,
-    private review_service: ReviewManagmentService
+    private review_service: ReviewManagmentService,
+    private auth: AuthService
   ) {
     this.id = this.activeRoute.snapshot.paramMap.get('id')!;
   }
@@ -70,6 +73,8 @@ export class DetailedViewComponent implements OnInit {
     this.dish_service.cartChanged$.subscribe((new_cart) => {
       this.count = this.dish_service.numberInCart(this.item.id);
     });
+
+    this.canComment = this.auth.getInfo().canComment;
   }
 
   itemLoaded() {
